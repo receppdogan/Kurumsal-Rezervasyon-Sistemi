@@ -49,6 +49,19 @@ class UserCreate(UserBase):
     password: str
 
 
+class EmployeeCreate(BaseModel):
+    """Model for creating employees with approval settings"""
+    email: EmailStr
+    password: str
+    full_name: str
+    phone: Optional[str] = None
+    role: UserRole = UserRole.EMPLOYEE
+    company_id: str
+    department: Optional[str] = None
+    requires_approval: bool = False
+    approver_id: Optional[str] = None
+
+
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
