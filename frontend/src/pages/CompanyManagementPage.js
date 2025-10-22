@@ -254,7 +254,7 @@ export default function CompanyManagementPage() {
                 {/* Hotel Fees */}
                 <div className="border rounded-lg p-4 space-y-4">
                   <h3 className="font-semibold text-lg">Otel</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="hotel_type">Ücret Tipi</Label>
                       <Select
@@ -268,14 +268,34 @@ export default function CompanyManagementPage() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="fixed">Sabit Tutar (₺)</SelectItem>
+                          <SelectItem value="fixed">Sabit Tutar</SelectItem>
                           <SelectItem value="percentage">Yüzde (%)</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     <div className="space-y-2">
+                      <Label htmlFor="hotel_currency">Döviz</Label>
+                      <Select
+                        value={serviceFees.hotel.currency}
+                        onValueChange={(value) => setServiceFees({ 
+                          ...serviceFees, 
+                          hotel: { ...serviceFees.hotel, currency: value }
+                        })}
+                      >
+                        <SelectTrigger data-testid="hotel-currency-select">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="TRY">₺ TRY (Türk Lirası)</SelectItem>
+                          <SelectItem value="USD">$ USD (Dolar)</SelectItem>
+                          <SelectItem value="EUR">€ EUR (Euro)</SelectItem>
+                          <SelectItem value="GBP">£ GBP (Sterlin)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
                       <Label htmlFor="hotel_value">
-                        {serviceFees.hotel.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
+                        {serviceFees.hotel.type === 'percentage' ? 'Yüzde (%)' : `Tutar (${serviceFees.hotel.currency})`}
                       </Label>
                       <Input
                         id="hotel_value"
@@ -291,7 +311,7 @@ export default function CompanyManagementPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="hotel_additional">Ek Özel Ücret (₺)</Label>
+                      <Label htmlFor="hotel_additional">Ek Özel Ücret ({serviceFees.hotel.currency})</Label>
                       <Input
                         id="hotel_additional"
                         type="number"
