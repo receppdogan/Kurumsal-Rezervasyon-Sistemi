@@ -664,6 +664,108 @@ async def get_users(
     return [UserResponse(**user) for user in users]
 
 
+@api_router.post("/employees", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+async def create_employee(
+    employee_data: EmployeeCreate,
+    current_user: dict = Depends(require_manager_or_admin),
+    database = Depends(get_db)
+):
+    """Create a new employee with approval settings (Manager/Admin only)"""
+    # Check if user already exists
+    existing_user = await database.users.find_one({"email": employee_data.email}, {"_id": 0})
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Email already registered"
+        )
+    
+    # If approver is specified, validate it exists and has appropriate role
+    if employee_data.approver_id:
+        approver = await database.users.find_one({"id": employee_data.approver_id}, {"_id": 0})
+        if not approver:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Approver not found"
+            )
+        if approver.get('role') not in [UserRole.MANAGER, UserRole.ADMIN]:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Approver must be a manager or admin"
+            )
+    
+    # Create new employee
+    user = User(
+        email=employee_data.email,
+        full_name=employee_data.full_name,
+        phone=employee_data.phone,
+        role=employee_data.role,
+        company_id=employee_data.company_id,
+        department=employee_data.department,
+        requires_approval=employee_data.requires_approval,
+        approver_id=employee_data.approver_id,
+        password_hash=get_password_hash(employee_data.password)
+    )
+    
+    # Convert to dict for MongoDB
+    user_dict = user.model_dump()
+    user_dict['created_at'] = user_dict['created_at'].isoformat()
+    user_dict['updated_at'] = user_dict['updated_at'].isoformat()
+    if user_dict.get('date_of_birth'):
+        user_dict['date_of_birth'] = user_dict['date_of_birth'].isoformat()
+    if user_dict.get('passport_expiry'):
+        user_dict['passport_expiry'] = user_dict['passport_expiry'].isoformat()
+    if user_dict.get('gdpr_accepted_date'):
+        user_dict['gdpr_accepted_date'] = user_dict['gdpr_accepted_date'].isoformat()
+    
+    await database.users.insert_one(user_dict)
+    
+    return UserResponse(**user.model_dump())
+
+
+@api_router.put("/employees/{employee_id}", response_model=UserResponse)
+async def update_employee(
+    employee_id: str,
+    update_data: dict,
+    current_user: dict = Depends(require_manager_or_admin),
+    database = Depends(get_db)
+):
+    """Update employee details including approval settings (Manager/Admin only)"""
+    existing = await database.users.find_one({"id": employee_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    
+    # If approver is being updated, validate it
+    if 'approver_id' in update_data and update_data['approver_id']:
+        approver = await database.users.find_one({"id": update_data['approver_id']}, {"_id": 0})
+        if not approver:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Approver not found"
+            )
+        if approver.get('role') not in [UserRole.MANAGER, UserRole.ADMIN]:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Approver must be a manager or admin"
+            )
+    
+    update_data['updated_at'] = datetime.utcnow().isoformat()
+    
+    await database.users.update_one(
+        {"id": employee_id},
+        {"$set": update_data}
+    )
+    
+    updated = await database.users.find_one({"id": employee_id}, {"_id": 0, "password_hash": 0})
+    
+    # Parse datetime fields
+    if isinstance(updated.get('created_at'), str):
+        updated['created_at'] = datetime.fromisoformat(updated['created_at'])
+    if isinstance(updated.get('updated_at'), str):
+        updated['updated_at'] = datetime.fromisoformat(updated['updated_at'])
+    
+    return UserResponse(**updated)
+
+
 # ==================== ROOT ENDPOINTS ====================
 
 @api_router.get("/")
