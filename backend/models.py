@@ -41,6 +41,8 @@ class UserBase(BaseModel):
     company_id: Optional[str] = None
     department: Optional[str] = None
     is_active: bool = True
+    requires_approval: bool = False  # Rezervasyonları onaya tabi mi?
+    approver_id: Optional[str] = None  # Onaylayacak yetkilinin ID'si
 
 
 class UserCreate(UserBase):
