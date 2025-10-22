@@ -122,6 +122,24 @@ class RuleTarget(str, Enum):
     EMPLOYEES = "employees"  # Belirli çalışanlar
 
 
+class ServiceLimits(BaseModel):
+    """Servis bazlı limit ayarları"""
+    enabled: bool = False  # Bu servis için limit/kural var mı?
+    max_price: Optional[float] = None
+    requires_approval: bool = True
+    
+    # Otel özel alanları
+    max_stars: Optional[int] = None
+    max_price_per_night: Optional[float] = None
+    
+    # Uçuş özel alanları
+    flight_class_restriction: Optional[str] = None  # economy, business, first
+    min_days_before: Optional[int] = None
+    
+    # Diğer servisler için genişletilebilir
+    notes: Optional[str] = None
+
+
 class BookingRule(BaseModel):
     """Tek bir rezervasyon kuralı"""
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -130,18 +148,13 @@ class BookingRule(BaseModel):
     department_list: List[str] = []  # Departman isimleri
     employee_list: List[str] = []  # Çalışan ID'leri
     
-    # Otel kuralları
-    hotel_max_stars: int = 5
-    hotel_max_price_per_night: Optional[float] = None
-    
-    # Uçuş kuralları
-    flight_max_price: Optional[float] = None
-    flight_class_restriction: Optional[str] = None  # economy, business, first
-    
-    # Genel kurallar
-    requires_manager_approval: bool = True
-    economy_booking_days_before: int = 0
-    business_booking_days_before: Optional[int] = None
+    # Servis bazlı limitler
+    hotel_limits: ServiceLimits = Field(default_factory=lambda: ServiceLimits(enabled=True, max_stars=5, requires_approval=True))
+    flight_limits: ServiceLimits = Field(default_factory=ServiceLimits)
+    transfer_limits: ServiceLimits = Field(default_factory=ServiceLimits)
+    visa_limits: ServiceLimits = Field(default_factory=ServiceLimits)
+    insurance_limits: ServiceLimits = Field(default_factory=ServiceLimits)
+    car_rental_limits: ServiceLimits = Field(default_factory=ServiceLimits)
     
     # Öncelik (düşük numara = yüksek öncelik)
     priority: int = 100
