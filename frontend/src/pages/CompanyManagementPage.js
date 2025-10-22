@@ -408,7 +408,7 @@ export default function CompanyManagementPage() {
                 {/* Transfer Fees */}
                 <div className="border rounded-lg p-4 space-y-4">
                   <h3 className="font-semibold text-lg">Transfer</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="transfer_type">Ücret Tipi</Label>
                       <Select
@@ -465,7 +465,7 @@ export default function CompanyManagementPage() {
                 {/* Visa Fees */}
                 <div className="border rounded-lg p-4 space-y-4">
                   <h3 className="font-semibold text-lg">Vize</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="visa_type">Ücret Tipi</Label>
                       <Select
@@ -522,7 +522,7 @@ export default function CompanyManagementPage() {
                 {/* Insurance Fees */}
                 <div className="border rounded-lg p-4 space-y-4">
                   <h3 className="font-semibold text-lg">Sigorta</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="insurance_type">Ücret Tipi</Label>
                       <Select
@@ -579,7 +579,7 @@ export default function CompanyManagementPage() {
                 {/* Car Rental Fees */}
                 <div className="border rounded-lg p-4 space-y-4">
                   <h3 className="font-semibold text-lg">Araç Kiralama</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="car_rental_type">Ücret Tipi</Label>
                       <Select
