@@ -9,6 +9,18 @@ from pathlib import Path
 from typing import List, Optional
 from datetime import datetime, date, timedelta
 
+# Exchange rates (mock - in production, use real-time API)
+EXCHANGE_RATES = {
+    "TRY": 1.0,
+    "USD": 32.50,
+    "EUR": 35.20,
+    "GBP": 41.30
+}
+
+def convert_to_try(amount: float, currency: str) -> float:
+    """Convert amount to TRY"""
+    return amount * EXCHANGE_RATES.get(currency, 1.0)
+
 # Import models and auth
 from models import (
     User, UserCreate, UserLogin, UserUpdate, UserResponse,
