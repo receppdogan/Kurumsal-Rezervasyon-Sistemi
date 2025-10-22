@@ -27,12 +27,12 @@ export default function CompanyManagementPage() {
     email: '',
   });
   const [serviceFees, setServiceFees] = useState({
-    hotel: { type: 'fixed', value: 50, additional_fee: 0 },
-    flight: { type: 'fixed', value: 75, additional_fee: 0 },
-    transfer: { type: 'fixed', value: 25, additional_fee: 0 },
-    visa: { type: 'fixed', value: 100, additional_fee: 0 },
-    insurance: { type: 'fixed', value: 30, additional_fee: 0 },
-    car_rental: { type: 'fixed', value: 40, additional_fee: 0 }
+    hotel: { type: 'fixed', value: 50, additional_fee: 0, currency: 'TRY' },
+    flight: { type: 'fixed', value: 75, additional_fee: 0, currency: 'TRY' },
+    transfer: { type: 'fixed', value: 25, additional_fee: 0, currency: 'TRY' },
+    visa: { type: 'fixed', value: 100, additional_fee: 0, currency: 'TRY' },
+    insurance: { type: 'fixed', value: 30, additional_fee: 0, currency: 'TRY' },
+    car_rental: { type: 'fixed', value: 40, additional_fee: 0, currency: 'TRY' }
   });
   const [bookingRules, setBookingRules] = useState({
     hotel_max_stars: 5,
