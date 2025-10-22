@@ -351,11 +351,13 @@ class APITester:
         
         response = self.make_request("PUT", f"/employees/{employee_id}", update_data3, self.tokens["ADMIN"])
         
-        if response and response.status_code == 400:
+        if response and response.status_code == 400 and "Approver not found" in response.text:
             print_success("Update validation correctly rejected invalid approver")
             self.test_results.append(("Update invalid approver validation", True))
         else:
             print_error("Update validation should have rejected invalid approver")
+            if response:
+                print(f"    Response: {response.text}")
             self.test_results.append(("Update invalid approver validation", False))
         
         return True
