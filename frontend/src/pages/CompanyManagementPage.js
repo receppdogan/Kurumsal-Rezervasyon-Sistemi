@@ -351,8 +351,28 @@ export default function CompanyManagementPage() {
                       </Select>
                     </div>
                     <div className="space-y-2">
+                      <Label htmlFor="flight_currency">Döviz</Label>
+                      <Select
+                        value={serviceFees.flight.currency}
+                        onValueChange={(value) => setServiceFees({ 
+                          ...serviceFees, 
+                          flight: { ...serviceFees.flight, currency: value }
+                        })}
+                      >
+                        <SelectTrigger data-testid="flight-currency-select">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="TRY">₺ TRY</SelectItem>
+                          <SelectItem value="USD">$ USD</SelectItem>
+                          <SelectItem value="EUR">€ EUR</SelectItem>
+                          <SelectItem value="GBP">£ GBP</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
                       <Label htmlFor="flight_value">
-                        {serviceFees.flight.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
+                        {serviceFees.flight.type === 'percentage' ? 'Yüzde (%)' : `Tutar (${serviceFees.flight.currency})`}
                       </Label>
                       <Input
                         id="flight_value"
