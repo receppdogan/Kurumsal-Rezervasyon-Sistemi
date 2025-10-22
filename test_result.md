@@ -180,10 +180,25 @@ test_plan:
   current_focus:
     - "Employee approval mechanism - API endpoints"
     - "Service fees access control - AGENCY_ADMIN only"
+    - "Employee approval UI in EmployeeManagementPage"
+    - "Service fees visibility control for company admin"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
   - agent: "main"
-    message: "İlk implementasyon başlatılıyor. Önce backend'de employee approval ve service fee access control yapılacak."
+    message: |
+      Backend ve frontend implementasyonları tamamlandı:
+      
+      Backend değişiklikleri:
+      1. /app/backend/models.py - EmployeeCreate, CompanyUpdateBasic, ServiceFeeUpdate modelleri eklendi
+      2. /app/backend/server.py - require_agency_admin dependency, POST /api/employees, PUT /api/employees/{id}, GET/PUT /api/companies/{id}/service-fees endpointleri eklendi
+      
+      Frontend değişiklikleri:
+      1. /app/frontend/src/api/api.js - employeeAPI ve companyAPI.getServiceFees/updateServiceFees eklendi
+      2. /app/frontend/src/pages/EmployeeManagementPage.js - Onay checkbox'ı ve onaylayıcı dropdown'ı eklendi
+      3. /app/frontend/src/pages/CompanyManagementPage.js - Service fees sekmesi sadece AGENCY_ADMIN'e gösteriliyor
+      
+      Tüm dosyalar lint kontrolünden geçti. Servisler yeniden başlatıldı.
+      Backend testing hazır.
