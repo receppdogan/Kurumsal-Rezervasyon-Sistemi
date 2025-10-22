@@ -29,7 +29,29 @@ export default function HotelDetailPage() {
 
   useEffect(() => {
     fetchHotel();
+    fetchServiceFee();
   }, [id]);
+
+  const fetchServiceFee = async () => {
+    try {
+      if (user?.company_id) {
+        const companyRes = await axios.get(`${API_BASE}/companies/${user.company_id}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
+        const hotelFee = companyRes.data.service_fees?.hotel || {};
+        
+        // Calculate service fee (mock calculation for display)
+        if (hotelFee.type === 'fixed') {
+          setServiceFee(hotelFee.value || 0);
+        } else {
+          // For percentage, we'll show it when room is selected
+          setServiceFee(hotelFee.value || 0);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to fetch service fee:', err);
+    }
+  };
 
   const fetchHotel = async () => {
     try {
