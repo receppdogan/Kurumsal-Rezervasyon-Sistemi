@@ -132,6 +132,30 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/company"
+        element={
+          <ProtectedRoute>
+            <CompanyManagementPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/employees"
+        element={
+          <ProtectedRoute>
+            <EmployeeManagementPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <UserProfilePage />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Default Route */}
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
