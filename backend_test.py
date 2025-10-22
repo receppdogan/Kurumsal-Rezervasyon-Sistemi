@@ -524,11 +524,13 @@ class APITester:
             
             response = self.make_request(method, endpoint, {"test": "data"})
             
-            if response and response.status_code == 401:
+            if response and response.status_code == 403 and "Not authenticated" in response.text:
                 print_success(f"{method} {endpoint} correctly requires authentication")
                 self.test_results.append((f"Auth required {method} {endpoint}", True))
             else:
                 print_error(f"{method} {endpoint} should require authentication")
+                if response:
+                    print(f"    Response: {response.text}")
                 self.test_results.append((f"Auth required {method} {endpoint}", False))
         
         return True
