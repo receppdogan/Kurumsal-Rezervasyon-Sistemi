@@ -696,13 +696,18 @@ async def get_dashboard_stats(
 
 @api_router.get("/users", response_model=List[UserResponse])
 async def get_users(
-    current_user: dict = Depends(require_manager_or_admin),
+    current_user: dict = Depends(require_admin),
     database = Depends(get_db)
 ):
-    """Get all users (Admin and Manager only)"""
+    """Get all users (Admin, Manager, and Agency Admin)"""
     query = {}
+    # Managers can only see users from their company
     if current_user['role'] == UserRole.MANAGER:
         query['company_id'] = current_user['company_id']
+    # Company admins can see users from their company
+    elif current_user['role'] == UserRole.ADMIN and current_user.get('company_id'):
+        query['company_id'] = current_user['company_id']
+    # Agency admins can see all users (no filter)
     
     users = await database.users.find(query, {"_id": 0, "password_hash": 0}).to_list(1000)
     return [UserResponse(**user) for user in users]
