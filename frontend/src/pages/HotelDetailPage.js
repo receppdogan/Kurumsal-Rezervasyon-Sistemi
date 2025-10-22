@@ -23,6 +23,7 @@ export default function HotelDetailPage() {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [specialRequests, setSpecialRequests] = useState('');
   const [booking, setBooking] = useState(false);
+  const [serviceFee, setServiceFee] = useState(0);
 
   const searchParams = location.state?.searchParams || {};
 
