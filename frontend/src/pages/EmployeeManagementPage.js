@@ -79,10 +79,13 @@ export default function EmployeeManagementPage() {
     setLoading(true);
 
     try {
-      const token = localStorage.getItem('token');
-      await axios.post(`${API_BASE}/auth/register`, formData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      // Clean up data - remove approver_id if not required
+      const submitData = { ...formData };
+      if (!submitData.requires_approval) {
+        submitData.approver_id = '';
+      }
+      
+      await employeeAPI.create(submitData);
       
       toast({ title: "Başarılı", description: "Yeni çalışan eklendi" });
       setShowAddDialog(false);
@@ -93,7 +96,9 @@ export default function EmployeeManagementPage() {
         phone: '',
         role: 'employee',
         company_id: user?.company_id || companies[0]?.id || '',
-        department: ''
+        department: '',
+        requires_approval: false,
+        approver_id: ''
       });
       fetchData();
     } catch (err) {
