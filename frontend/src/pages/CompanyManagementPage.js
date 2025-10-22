@@ -257,10 +257,17 @@ export default function CompanyManagementPage() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button type="button" variant="outline" onClick={handleReset}>
-                    Temizle
-                  </Button>
-                  <Button type="submit" disabled={loading} data-testid="save-company-button">
+                  {isAgencyAdmin && (
+                    <Button type="button" variant="outline" onClick={handleReset}>
+                      Temizle
+                    </Button>
+                  )}
+                  <Button 
+                    type="submit" 
+                    disabled={loading || (!selectedCompany && !isAgencyAdmin)} 
+                    data-testid="save-company-button"
+                    className={!isAgencyAdmin ? 'w-full' : ''}
+                  >
                     {loading ? 'Kaydediliyor...' : selectedCompany ? 'Güncelle' : 'Şirket Oluştur'}
                   </Button>
                 </CardFooter>
