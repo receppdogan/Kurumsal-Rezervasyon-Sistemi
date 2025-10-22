@@ -450,7 +450,7 @@ class APITester:
         response = self.make_request("PUT", f"/companies/{self.company_id}/service-fees", 
                                    service_fee_update, self.tokens["ADMIN"])
         
-        if response and response.status_code == 403:
+        if response and response.status_code == 403 and "B2BTravel Admin access required" in response.text:
             print_success("Company ADMIN correctly denied access to update service fees")
             self.test_results.append(("Company ADMIN denied PUT service fees", True))
         else:
