@@ -754,7 +754,8 @@ export default function CompanyManagementPage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="rules">
+          {isAgencyAdmin && (
+            <TabsContent value="fees">
             <BookingRulesManager
               bookingRules={bookingRules}
               setBookingRules={setBookingRules}
