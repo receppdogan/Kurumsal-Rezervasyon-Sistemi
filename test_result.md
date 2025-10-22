@@ -157,11 +157,11 @@ frontend:
 
   - task: "Service fees visibility control for company admin"
     implemented: true
-    working: "NA"
+    working: false
     file: "/app/frontend/src/pages/CompanyManagementPage.js"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
@@ -169,6 +169,9 @@ frontend:
       - working: "NA"
         agent: "main"
         comment: "Fix uygulandı - Loading condition iyileştirildi. Artık companies boş olsa bile error yoksa tabs render edilecek. Error handling geliştirildi. Frontend restart edildi."
+      - working: false
+        agent: "testing"
+        comment: "Re-test tamamlandı - Sorun devam ediyor. Agency admin (agency.admin@b2btravel.com) ile giriş yapılabiliyor ve GDPR onayı verilebiliyor, ancak company management sayfasına erişimde sorun var. Sayfa yükleniyor ancak tabs render edilmiyor. Authentication/session management sorunu olabilir. Backend API'lar çalışıyor ancak frontend'de tabs görünmüyor. Stuck count artırıldı."
 
   - task: "BookingRules UI - All service types support"
     implemented: false
