@@ -145,7 +145,8 @@ export default function CompanyManagementPage() {
     setSelectedCompany(null);
   };
 
-  if (loading && companies.length === 0) {
+  // Show loading spinner only on initial load
+  if (loading && companies.length === 0 && !error) {
     return (
       <Layout>
         <div className="flex justify-center items-center h-64">
