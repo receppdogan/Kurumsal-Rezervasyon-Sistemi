@@ -54,6 +54,12 @@ export default function EmployeeManagementPage() {
       setEmployees(usersRes.data);
       setCompanies(companiesRes.data);
       
+      // Filter managers and admins for approver dropdown
+      const managersAndAdmins = usersRes.data.filter(u => 
+        u.role === 'manager' || u.role === 'admin'
+      );
+      setManagers(managersAndAdmins);
+      
       // Set default company for new users
       if (user?.company_id) {
         setFormData(prev => ({ ...prev, company_id: user.company_id }));
