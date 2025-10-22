@@ -526,7 +526,7 @@ export default function CompanyManagementPage() {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="visa_value">
-                        {serviceFees.visa.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
+                        {serviceFees.visa.type === 'percentage' ? 'Yüzde (%)' : `Tutar (${serviceFees.visa.currency})`}
                       </Label>
                       <Input
                         id="visa_value"
@@ -603,7 +603,7 @@ export default function CompanyManagementPage() {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="insurance_value">
-                        {serviceFees.insurance.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
+                        {serviceFees.insurance.type === 'percentage' ? 'Yüzde (%)' : `Tutar (${serviceFees.insurance.currency})`}
                       </Label>
                       <Input
                         id="insurance_value"
@@ -680,7 +680,7 @@ export default function CompanyManagementPage() {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="car_rental_value">
-                        {serviceFees.car_rental.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
+                        {serviceFees.car_rental.type === 'percentage' ? 'Yüzde (%)' : `Tutar (${serviceFees.car_rental.currency})`}
                       </Label>
                       <Input
                         id="car_rental_value"
