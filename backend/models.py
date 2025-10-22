@@ -93,10 +93,18 @@ class ServiceFeeType(str, Enum):
     PERCENTAGE = "percentage"  # Yüzdesel
 
 
+class Currency(str, Enum):
+    TRY = "TRY"  # Türk Lirası
+    USD = "USD"  # Amerikan Doları
+    EUR = "EUR"  # Euro
+    GBP = "GBP"  # İngiliz Sterlini
+
+
 class ServiceFeeItem(BaseModel):
     type: ServiceFeeType = ServiceFeeType.FIXED
     value: float = 0.0
     additional_fee: float = 0.0  # Ekstra özel servis bedeli
+    currency: Currency = Currency.TRY  # Döviz cinsi
 
 
 class ServiceFee(BaseModel):
