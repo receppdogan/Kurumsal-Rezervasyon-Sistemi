@@ -52,6 +52,11 @@ async def get_db():
     return db
 
 
+# Dependency to get current user with db
+async def get_current_user_dep(credentials = Depends(security)):
+    return await get_current_user(credentials, db)
+
+
 # ==================== AUTHENTICATION ENDPOINTS ====================
 
 @api_router.post("/auth/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
