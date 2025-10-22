@@ -250,3 +250,27 @@ agent_communication:
       - Root cause: isAgencyAdmin check may not be working correctly after GDPR consent flow
       
       CRITICAL ISSUE: Agency admin cannot access service fees management functionality.
+  - agent: "testing"
+    message: |
+      RE-TEST COMPLETED - Service Fees Visibility Control STILL FAILING:
+      
+      ❌ CRITICAL FINDINGS:
+      - Agency admin login works (agency.admin@b2btravel.com / agency123)
+      - GDPR consent can be accepted via API (/api/auth/accept-gdpr)
+      - Backend APIs are functional and accessible
+      - User role is correctly set as "agency_admin"
+      
+      ❌ FRONTEND ISSUES IDENTIFIED:
+      - Company Management page (/company-management) not loading properly
+      - Navigation to /company or /company-management redirects back to login
+      - Session management appears to have issues
+      - Tabs are not rendering even after successful authentication
+      - Loading condition fix did not resolve the core issue
+      
+      ❌ ROOT CAUSE ANALYSIS:
+      - Authentication flow works but session persistence fails
+      - Frontend routing may have authentication guards that are too strict
+      - Company management page may have additional authorization checks
+      - The isAgencyAdmin check in CompanyManagementPage.js may not be receiving correct user data
+      
+      RECOMMENDATION: Main agent should investigate session management, routing guards, and user context propagation in the frontend. The issue is not with the loading condition but with authentication/authorization flow.
