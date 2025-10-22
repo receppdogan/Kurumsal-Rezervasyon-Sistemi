@@ -53,7 +53,7 @@ def get_applicable_rule(company_rules: dict, user: dict) -> dict:
 # Import models and auth
 from models import (
     User, UserCreate, UserLogin, UserUpdate, UserResponse, EmployeeCreate,
-    Company, CompanyCreate,
+    Company, CompanyCreate, CompanyUpdateBasic, ServiceFeeUpdate,
     Hotel, HotelSearchRequest,
     Reservation, HotelReservationCreate, ReservationUpdate, ReservationResponse,
     ReservationStatus, UserRole, ServiceType,
