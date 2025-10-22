@@ -367,7 +367,23 @@ async def create_reservation(
     requires_approval = True
     
     if company:
-        service_fee = company.get('service_fees', {}).get('hotel', 0.0)
+        # Calculate service fee based on type (fixed or percentage)
+        hotel_fee_config = company.get('service_fees', {}).get('hotel', {})
+        
+        # Handle both old format (float) and new format (dict)
+        if isinstance(hotel_fee_config, dict):
+            fee_type = hotel_fee_config.get('type', 'fixed')
+            fee_value = hotel_fee_config.get('value', 0.0)
+            additional_fee = hotel_fee_config.get('additional_fee', 0.0)
+            
+            if fee_type == 'percentage':
+                service_fee = (total_price * fee_value / 100) + additional_fee
+            else:  # fixed
+                service_fee = fee_value + additional_fee
+        else:
+            # Backward compatibility for old float format
+            service_fee = float(hotel_fee_config) if hotel_fee_config else 0.0
+        
         requires_approval = company.get('booking_rules', {}).get('requires_manager_approval', True)
     
     grand_total = total_price + service_fee
