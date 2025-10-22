@@ -247,52 +247,419 @@ export default function BookingRulesManager({
               </div>
             )}
 
-            {/* Hotel Rules */}
+            {/* Service Based Limits */}
             <div className="border-t pt-4 space-y-4">
-              <h4 className="font-semibold">Otel Rezervasyon Limitleri</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="hotel_stars">Maksimum Yıldız</Label>
-                  <Input
-                    id="hotel_stars"
-                    type="number"
-                    min="1"
-                    max="5"
-                    value={currentRule.hotel_max_stars}
-                    onChange={(e) => updateRule('hotel_max_stars', parseInt(e.target.value))}
-                    data-testid="hotel-stars-input"
-                  />
+              <h4 className="font-semibold text-lg">Servis Bazlı Limitler</h4>
+              <p className="text-sm text-gray-600">Her servis için ayrı kurallar belirleyin. Devre dışı bırakılan servisler için kural uygulanmaz.</p>
+              
+              {/* Hotel Limits */}
+              <div className="border rounded-lg p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="hotel_enabled"
+                      checked={currentRule.hotel_limits?.enabled ?? true}
+                      onChange={(e) => updateRule('hotel_limits', { 
+                        ...(currentRule.hotel_limits || {}), 
+                        enabled: e.target.checked 
+                      })}
+                      className="h-4 w-4"
+                      data-testid="hotel-enabled-checkbox"
+                    />
+                    <Label htmlFor="hotel_enabled" className="font-semibold text-base">
+                      🏨 Otel Rezervasyonları
+                    </Label>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="hotel_price">Maksimum Gecelik Fiyat (TL)</Label>
-                  <Input
-                    id="hotel_price"
-                    type="number"
-                    min="0"
-                    value={currentRule.hotel_max_price_per_night || ''}
-                    onChange={(e) => updateRule('hotel_max_price_per_night', parseFloat(e.target.value) || null)}
-                    placeholder="Limitsiz için boş bırakın"
-                    data-testid="hotel-price-input"
-                  />
-                </div>
+                
+                {currentRule.hotel_limits?.enabled && (
+                  <div className="pl-6 space-y-3 border-l-2 border-blue-200">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <Label htmlFor="hotel_stars">Maksimum Yıldız</Label>
+                        <Input
+                          id="hotel_stars"
+                          type="number"
+                          min="1"
+                          max="5"
+                          value={currentRule.hotel_limits?.max_stars ?? 5}
+                          onChange={(e) => updateRule('hotel_limits', { 
+                            ...(currentRule.hotel_limits || {}), 
+                            max_stars: parseInt(e.target.value) 
+                          })}
+                          data-testid="hotel-stars-input"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="hotel_price_per_night">Maksimum Gecelik Fiyat (TL)</Label>
+                        <Input
+                          id="hotel_price_per_night"
+                          type="number"
+                          min="0"
+                          value={currentRule.hotel_limits?.max_price_per_night || ''}
+                          onChange={(e) => updateRule('hotel_limits', { 
+                            ...(currentRule.hotel_limits || {}), 
+                            max_price_per_night: parseFloat(e.target.value) || null 
+                          })}
+                          placeholder="Limitsiz"
+                          data-testid="hotel-price-input"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="hotel_approval"
+                        checked={currentRule.hotel_limits?.requires_approval ?? true}
+                        onChange={(e) => updateRule('hotel_limits', { 
+                          ...(currentRule.hotel_limits || {}), 
+                          requires_approval: e.target.checked 
+                        })}
+                        className="h-4 w-4"
+                        data-testid="hotel-approval-checkbox"
+                      />
+                      <Label htmlFor="hotel_approval" className="font-normal text-sm">
+                        Manager onayı gerekli
+                      </Label>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
 
-            {/* Approval Rules */}
-            <div className="border-t pt-4 space-y-4">
-              <h4 className="font-semibold">Onay Kuralları</h4>
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="requires_approval"
-                  checked={currentRule.requires_manager_approval}
-                  onChange={(e) => updateRule('requires_manager_approval', e.target.checked)}
-                  className="h-4 w-4"
-                  data-testid="requires-approval-checkbox"
-                />
-                <Label htmlFor="requires_approval" className="font-normal">
-                  Rezervasyonlar manager onayı gerektirsin
-                </Label>
+              {/* Flight Limits */}
+              <div className="border rounded-lg p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="flight_enabled"
+                      checked={currentRule.flight_limits?.enabled ?? false}
+                      onChange={(e) => updateRule('flight_limits', { 
+                        ...(currentRule.flight_limits || {}), 
+                        enabled: e.target.checked 
+                      })}
+                      className="h-4 w-4"
+                      data-testid="flight-enabled-checkbox"
+                    />
+                    <Label htmlFor="flight_enabled" className="font-semibold text-base">
+                      ✈️ Uçuş Rezervasyonları
+                    </Label>
+                  </div>
+                </div>
+                
+                {currentRule.flight_limits?.enabled && (
+                  <div className="pl-6 space-y-3 border-l-2 border-blue-200">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <Label htmlFor="flight_max_price">Maksimum Bilet Fiyatı (TL)</Label>
+                        <Input
+                          id="flight_max_price"
+                          type="number"
+                          min="0"
+                          value={currentRule.flight_limits?.max_price || ''}
+                          onChange={(e) => updateRule('flight_limits', { 
+                            ...(currentRule.flight_limits || {}), 
+                            max_price: parseFloat(e.target.value) || null 
+                          })}
+                          placeholder="Limitsiz"
+                          data-testid="flight-price-input"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="flight_class">Sınıf Kısıtlaması</Label>
+                        <Select
+                          value={currentRule.flight_limits?.flight_class_restriction || 'none'}
+                          onValueChange={(value) => updateRule('flight_limits', { 
+                            ...(currentRule.flight_limits || {}), 
+                            flight_class_restriction: value === 'none' ? null : value 
+                          })}
+                        >
+                          <SelectTrigger data-testid="flight-class-select">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="none">Kısıtlama Yok</SelectItem>
+                            <SelectItem value="economy">Sadece Economy</SelectItem>
+                            <SelectItem value="business">Economy veya Business</SelectItem>
+                            <SelectItem value="first">Tüm Sınıflar</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="flight_days_before">Minimum Kaç Gün Önceden (Gün)</Label>
+                        <Input
+                          id="flight_days_before"
+                          type="number"
+                          min="0"
+                          value={currentRule.flight_limits?.min_days_before || ''}
+                          onChange={(e) => updateRule('flight_limits', { 
+                            ...(currentRule.flight_limits || {}), 
+                            min_days_before: parseInt(e.target.value) || null 
+                          })}
+                          placeholder="Kısıtlama yok"
+                          data-testid="flight-days-input"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="flight_approval"
+                        checked={currentRule.flight_limits?.requires_approval ?? true}
+                        onChange={(e) => updateRule('flight_limits', { 
+                          ...(currentRule.flight_limits || {}), 
+                          requires_approval: e.target.checked 
+                        })}
+                        className="h-4 w-4"
+                        data-testid="flight-approval-checkbox"
+                      />
+                      <Label htmlFor="flight_approval" className="font-normal text-sm">
+                        Manager onayı gerekli
+                      </Label>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Transfer Limits */}
+              <div className="border rounded-lg p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="transfer_enabled"
+                      checked={currentRule.transfer_limits?.enabled ?? false}
+                      onChange={(e) => updateRule('transfer_limits', { 
+                        ...(currentRule.transfer_limits || {}), 
+                        enabled: e.target.checked 
+                      })}
+                      className="h-4 w-4"
+                      data-testid="transfer-enabled-checkbox"
+                    />
+                    <Label htmlFor="transfer_enabled" className="font-semibold text-base">
+                      🚗 Transfer Hizmetleri
+                    </Label>
+                  </div>
+                </div>
+                
+                {currentRule.transfer_limits?.enabled && (
+                  <div className="pl-6 space-y-3 border-l-2 border-blue-200">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <Label htmlFor="transfer_max_price">Maksimum Fiyat (TL)</Label>
+                        <Input
+                          id="transfer_max_price"
+                          type="number"
+                          min="0"
+                          value={currentRule.transfer_limits?.max_price || ''}
+                          onChange={(e) => updateRule('transfer_limits', { 
+                            ...(currentRule.transfer_limits || {}), 
+                            max_price: parseFloat(e.target.value) || null 
+                          })}
+                          placeholder="Limitsiz"
+                          data-testid="transfer-price-input"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="transfer_approval"
+                        checked={currentRule.transfer_limits?.requires_approval ?? true}
+                        onChange={(e) => updateRule('transfer_limits', { 
+                          ...(currentRule.transfer_limits || {}), 
+                          requires_approval: e.target.checked 
+                        })}
+                        className="h-4 w-4"
+                        data-testid="transfer-approval-checkbox"
+                      />
+                      <Label htmlFor="transfer_approval" className="font-normal text-sm">
+                        Manager onayı gerekli
+                      </Label>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Visa Limits */}
+              <div className="border rounded-lg p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="visa_enabled"
+                      checked={currentRule.visa_limits?.enabled ?? false}
+                      onChange={(e) => updateRule('visa_limits', { 
+                        ...(currentRule.visa_limits || {}), 
+                        enabled: e.target.checked 
+                      })}
+                      className="h-4 w-4"
+                      data-testid="visa-enabled-checkbox"
+                    />
+                    <Label htmlFor="visa_enabled" className="font-semibold text-base">
+                      🛂 Vize İşlemleri
+                    </Label>
+                  </div>
+                </div>
+                
+                {currentRule.visa_limits?.enabled && (
+                  <div className="pl-6 space-y-3 border-l-2 border-blue-200">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <Label htmlFor="visa_max_price">Maksimum Fiyat (TL)</Label>
+                        <Input
+                          id="visa_max_price"
+                          type="number"
+                          min="0"
+                          value={currentRule.visa_limits?.max_price || ''}
+                          onChange={(e) => updateRule('visa_limits', { 
+                            ...(currentRule.visa_limits || {}), 
+                            max_price: parseFloat(e.target.value) || null 
+                          })}
+                          placeholder="Limitsiz"
+                          data-testid="visa-price-input"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="visa_approval"
+                        checked={currentRule.visa_limits?.requires_approval ?? true}
+                        onChange={(e) => updateRule('visa_limits', { 
+                          ...(currentRule.visa_limits || {}), 
+                          requires_approval: e.target.checked 
+                        })}
+                        className="h-4 w-4"
+                        data-testid="visa-approval-checkbox"
+                      />
+                      <Label htmlFor="visa_approval" className="font-normal text-sm">
+                        Manager onayı gerekli
+                      </Label>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Insurance Limits */}
+              <div className="border rounded-lg p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="insurance_enabled"
+                      checked={currentRule.insurance_limits?.enabled ?? false}
+                      onChange={(e) => updateRule('insurance_limits', { 
+                        ...(currentRule.insurance_limits || {}), 
+                        enabled: e.target.checked 
+                      })}
+                      className="h-4 w-4"
+                      data-testid="insurance-enabled-checkbox"
+                    />
+                    <Label htmlFor="insurance_enabled" className="font-semibold text-base">
+                      🏥 Seyahat Sigortası
+                    </Label>
+                  </div>
+                </div>
+                
+                {currentRule.insurance_limits?.enabled && (
+                  <div className="pl-6 space-y-3 border-l-2 border-blue-200">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <Label htmlFor="insurance_max_price">Maksimum Fiyat (TL)</Label>
+                        <Input
+                          id="insurance_max_price"
+                          type="number"
+                          min="0"
+                          value={currentRule.insurance_limits?.max_price || ''}
+                          onChange={(e) => updateRule('insurance_limits', { 
+                            ...(currentRule.insurance_limits || {}), 
+                            max_price: parseFloat(e.target.value) || null 
+                          })}
+                          placeholder="Limitsiz"
+                          data-testid="insurance-price-input"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="insurance_approval"
+                        checked={currentRule.insurance_limits?.requires_approval ?? true}
+                        onChange={(e) => updateRule('insurance_limits', { 
+                          ...(currentRule.insurance_limits || {}), 
+                          requires_approval: e.target.checked 
+                        })}
+                        className="h-4 w-4"
+                        data-testid="insurance-approval-checkbox"
+                      />
+                      <Label htmlFor="insurance_approval" className="font-normal text-sm">
+                        Manager onayı gerekli
+                      </Label>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Car Rental Limits */}
+              <div className="border rounded-lg p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="car_rental_enabled"
+                      checked={currentRule.car_rental_limits?.enabled ?? false}
+                      onChange={(e) => updateRule('car_rental_limits', { 
+                        ...(currentRule.car_rental_limits || {}), 
+                        enabled: e.target.checked 
+                      })}
+                      className="h-4 w-4"
+                      data-testid="car-rental-enabled-checkbox"
+                    />
+                    <Label htmlFor="car_rental_enabled" className="font-semibold text-base">
+                      🚙 Araç Kiralama
+                    </Label>
+                  </div>
+                </div>
+                
+                {currentRule.car_rental_limits?.enabled && (
+                  <div className="pl-6 space-y-3 border-l-2 border-blue-200">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <Label htmlFor="car_rental_max_price">Maksimum Fiyat (TL)</Label>
+                        <Input
+                          id="car_rental_max_price"
+                          type="number"
+                          min="0"
+                          value={currentRule.car_rental_limits?.max_price || ''}
+                          onChange={(e) => updateRule('car_rental_limits', { 
+                            ...(currentRule.car_rental_limits || {}), 
+                            max_price: parseFloat(e.target.value) || null 
+                          })}
+                          placeholder="Limitsiz"
+                          data-testid="car-rental-price-input"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="car_rental_approval"
+                        checked={currentRule.car_rental_limits?.requires_approval ?? true}
+                        onChange={(e) => updateRule('car_rental_limits', { 
+                          ...(currentRule.car_rental_limits || {}), 
+                          requires_approval: e.target.checked 
+                        })}
+                        className="h-4 w-4"
+                        data-testid="car-rental-approval-checkbox"
+                      />
+                      <Label htmlFor="car_rental_approval" className="font-normal text-sm">
+                        Manager onayı gerekli
+                      </Label>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
