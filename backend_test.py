@@ -281,7 +281,19 @@ class APITester:
         # Test 5: Test duplicate email validation
         print_info("Test 5: Test duplicate email validation")
         
-        response = self.make_request("POST", "/employees", employee_data, self.tokens["ADMIN"])
+        # Use existing admin email to test duplicate validation
+        duplicate_employee_data = {
+            "email": "admin@abc-tech.com",  # This email already exists
+            "password": "test123",
+            "full_name": "Duplicate Admin",
+            "phone": "+90 532 999 99 99",
+            "role": "employee",
+            "company_id": self.company_id,
+            "department": "Test Department",
+            "requires_approval": False
+        }
+        
+        response = self.make_request("POST", "/employees", duplicate_employee_data, self.tokens["ADMIN"])
         
         if response and response.status_code == 400 and "Email already registered" in response.text:
             print_success("Validation correctly rejected duplicate email")
