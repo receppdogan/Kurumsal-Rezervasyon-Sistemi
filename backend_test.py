@@ -254,8 +254,9 @@ class APITester:
         # Test 4: Test validation - approver must be manager or admin
         print_info("Test 4: Test validation - approver must be manager or admin")
         
+        unique_id4 = str(uuid.uuid4())[:8]
         employee_data4 = {
-            "email": "test.employee4@abc-tech.com",
+            "email": f"test.employee4.{unique_id4}@abc-tech.com",
             "password": "test123",
             "full_name": "Test Employee 4",
             "phone": "+90 532 777 77 77",
