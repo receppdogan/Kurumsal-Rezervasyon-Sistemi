@@ -164,8 +164,10 @@ class APITester:
         # Test 1: Create employee with approval requirements
         print_info("Test 1: Create employee with requires_approval=true")
         
+        # Generate unique email to avoid conflicts
+        unique_id = str(uuid.uuid4())[:8]
         employee_data = {
-            "email": "test.employee1@abc-tech.com",
+            "email": f"test.employee1.{unique_id}@abc-tech.com",
             "password": "test123",
             "full_name": "Test Employee 1",
             "phone": "+90 532 444 44 44",
