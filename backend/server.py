@@ -577,7 +577,7 @@ async def get_dashboard_stats(
 
 @api_router.get("/users", response_model=List[UserResponse])
 async def get_users(
-    current_user: dict = Depends(lambda: require_role([UserRole.ADMIN, UserRole.MANAGER])),
+    current_user: dict = Depends(require_manager_or_admin),
     database = Depends(get_db)
 ):
     """Get all users (Admin and Manager only)"""
