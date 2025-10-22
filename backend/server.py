@@ -430,7 +430,10 @@ async def create_reservation(
             # Backward compatibility for old float format
             service_fee = float(hotel_fee_config) if hotel_fee_config else 0.0
         
-        requires_approval = company.get('booking_rules', {}).get('requires_manager_approval', True)
+        # Get applicable rule for this user
+        booking_rules = company.get('booking_rules', {})
+        applicable_rule = get_applicable_rule(booking_rules, current_user)
+        requires_approval = applicable_rule.get('requires_manager_approval', True)
     
     grand_total = total_price + service_fee
     
