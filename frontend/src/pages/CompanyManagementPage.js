@@ -465,7 +465,7 @@ export default function CompanyManagementPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="transfer_additional">Ek Özel Ücret (₺)</Label>
+                      <Label htmlFor="transfer_additional">Ek Özel Ücret ({serviceFees.transfer.currency})</Label>
                       <Input
                         id="transfer_additional"
                         type="number"
