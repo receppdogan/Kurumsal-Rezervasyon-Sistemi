@@ -283,7 +283,7 @@ class APITester:
         
         response = self.make_request("POST", "/employees", employee_data, self.tokens["ADMIN"])
         
-        if response and response.status_code == 400 and "already registered" in response.text:
+        if response and response.status_code == 400 and "Email already registered" in response.text:
             print_success("Validation correctly rejected duplicate email")
             self.test_results.append(("Duplicate email validation", True))
         else:
