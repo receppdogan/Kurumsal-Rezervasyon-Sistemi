@@ -195,7 +195,7 @@ async def accept_gdpr(
 @api_router.post("/companies", response_model=Company, status_code=status.HTTP_201_CREATED)
 async def create_company(
     company_data: CompanyCreate,
-    current_user: dict = Depends(lambda: require_role([UserRole.ADMIN, UserRole.AGENCY_ADMIN])),
+    current_user: dict = Depends(require_admin),
     database = Depends(get_db)
 ):
     """Create a new company (Admin only)"""
@@ -249,7 +249,7 @@ async def get_company(
 async def update_company(
     company_id: str,
     company_data: CompanyCreate,
-    current_user: dict = Depends(lambda: require_role([UserRole.ADMIN, UserRole.AGENCY_ADMIN])),
+    current_user: dict = Depends(require_admin),
     database = Depends(get_db)
 ):
     """Update company (Admin only)"""
