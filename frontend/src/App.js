@@ -1,53 +1,150 @@
-import { useEffect } from "react";
+import React from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { Toaster } from "./components/ui/toaster";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+// Pages
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import GDPRConsent from "./pages/GDPRConsent";
+import DashboardPage from "./pages/DashboardPage";
+import HotelsPage from "./pages/HotelsPage";
+import HotelDetailPage from "./pages/HotelDetailPage";
+import ReservationsPage from "./pages/ReservationsPage";
+import ApprovalsPage from "./pages/ApprovalsPage";
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated, loading, user } = useAuth();
 
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Check if user needs to accept GDPR
+  if (!user?.gdpr_accepted && window.location.pathname !== '/gdpr-consent') {
+    return <Navigate to="/gdpr-consent" replace />;
+  }
+
+  return children;
 };
+
+// Public Route Component (redirects to dashboard if already logged in)
+const PublicRoute = ({ children }) => {
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return children;
+};
+
+function AppRoutes() {
+  return (
+    <Routes>
+      {/* Public Routes */}
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <LoginPage />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <RegisterPage />
+          </PublicRoute>
+        }
+      />
+
+      {/* GDPR Consent Route */}
+      <Route
+        path="/gdpr-consent"
+        element={
+          <ProtectedRoute>
+            <GDPRConsent />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Protected Routes */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/hotels"
+        element={
+          <ProtectedRoute>
+            <HotelsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/hotels/:id"
+        element={
+          <ProtectedRoute>
+            <HotelDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/reservations"
+        element={
+          <ProtectedRoute>
+            <ReservationsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/approvals"
+        element={
+          <ProtectedRoute>
+            <ApprovalsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Default Route */}
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+    </Routes>
+  );
+}
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRoutes />
+        <Toaster />
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
