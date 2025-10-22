@@ -74,13 +74,13 @@ export default function CompanyManagementPage() {
         userAPI.getAll()
       ]);
       const response = companiesRes;
-      setCompanies(response.data);
+      setCompanies(response.data || []);
       
       // Extract unique departments
       const uniqueDepts = [...new Set(usersRes.data.map(u => u.department).filter(Boolean))];
       setDepartments(uniqueDepts);
-      setEmployees(usersRes.data);
-      if (response.data.length > 0) {
+      setEmployees(usersRes.data || []);
+      if (response.data && response.data.length > 0) {
         const company = response.data[0];
         setSelectedCompany(company);
         setFormData({
@@ -94,8 +94,8 @@ export default function CompanyManagementPage() {
         setBookingRules(company.booking_rules || bookingRules);
       }
     } catch (err) {
-      setError('Şirketler yüklenirken bir hata oluştu');
-      console.error(err);
+      setError('Şirketler yüklenirken bir hata oluştu: ' + (err.response?.data?.detail || err.message));
+      console.error('fetchCompanies error:', err);
     } finally {
       setLoading(false);
     }
