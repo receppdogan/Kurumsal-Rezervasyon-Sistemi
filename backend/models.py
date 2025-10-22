@@ -88,13 +88,24 @@ class UserResponse(UserBase):
 
 
 # Company Models
+class ServiceFeeType(str, Enum):
+    FIXED = "fixed"  # Sabit tutar
+    PERCENTAGE = "percentage"  # Yüzdesel
+
+
+class ServiceFeeItem(BaseModel):
+    type: ServiceFeeType = ServiceFeeType.FIXED
+    value: float = 0.0
+    additional_fee: float = 0.0  # Ekstra özel servis bedeli
+
+
 class ServiceFee(BaseModel):
-    hotel: float = 0.0
-    flight: float = 0.0
-    transfer: float = 0.0
-    visa: float = 0.0
-    insurance: float = 0.0
-    car_rental: float = 0.0
+    hotel: ServiceFeeItem = Field(default_factory=ServiceFeeItem)
+    flight: ServiceFeeItem = Field(default_factory=ServiceFeeItem)
+    transfer: ServiceFeeItem = Field(default_factory=ServiceFeeItem)
+    visa: ServiceFeeItem = Field(default_factory=ServiceFeeItem)
+    insurance: ServiceFeeItem = Field(default_factory=ServiceFeeItem)
+    car_rental: ServiceFeeItem = Field(default_factory=ServiceFeeItem)
 
 
 class BookingRules(BaseModel):
