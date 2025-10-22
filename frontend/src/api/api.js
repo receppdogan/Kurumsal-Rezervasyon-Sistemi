@@ -26,6 +26,8 @@ export const companyAPI = {
   getAll: () => api.get('/companies'),
   getById: (id) => api.get(`/companies/${id}`),
   update: (id, data) => api.put(`/companies/${id}`, data),
+  getServiceFees: (id) => api.get(`/companies/${id}/service-fees`),
+  updateServiceFees: (id, data) => api.put(`/companies/${id}/service-fees`, data),
 };
 
 // Hotels
