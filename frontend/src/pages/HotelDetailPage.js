@@ -311,10 +311,16 @@ export default function HotelDetailPage() {
                           <span>₺{selectedRoom.price_per_night.toLocaleString('tr-TR')} x {nights} gece</span>
                           <span>₺{(selectedRoom.price_per_night * nights).toLocaleString('tr-TR')}</span>
                         </div>
+                        {serviceFee > 0 && (
+                          <div className="flex justify-between text-sm text-gray-600">
+                            <span>Servis Ücreti</span>
+                            <span>₺{serviceFee.toLocaleString('tr-TR')}</span>
+                          </div>
+                        )}
                         <div className="flex justify-between font-bold text-lg border-t pt-2">
                           <span>Toplam</span>
                           <span className="text-blue-600">
-                            ₺{(selectedRoom.price_per_night * nights).toLocaleString('tr-TR')}
+                            ₺{((selectedRoom.price_per_night * nights) + serviceFee).toLocaleString('tr-TR')}
                           </span>
                         </div>
                       </div>
