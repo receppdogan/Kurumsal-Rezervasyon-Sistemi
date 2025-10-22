@@ -127,6 +127,16 @@ async def require_agency_admin(current_user: dict = Depends(get_current_user_dep
     return current_user
 
 
+async def require_admin_or_manager_or_agency(current_user: dict = Depends(get_current_user_dep)):
+    """Admin, Manager, or Agency Admin can access"""
+    if current_user.get("role") not in [UserRole.ADMIN, UserRole.MANAGER, UserRole.AGENCY_ADMIN]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin, Manager or Agency Admin access required"
+        )
+    return current_user
+
+
 # ==================== AUTHENTICATION ENDPOINTS ====================
 
 @api_router.post("/auth/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
