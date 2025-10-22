@@ -193,13 +193,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Employee approval mechanism - API endpoints"
-    - "Service fees access control - AGENCY_ADMIN only"
-    - "Employee approval UI in EmployeeManagementPage"
     - "Service fees visibility control for company admin"
-  stuck_tasks: []
+  stuck_tasks: 
+    - "Service fees visibility control for company admin"
   test_all: false
-  test_priority: "high_first"
+  test_priority: "stuck_first"
 
 agent_communication:
   - agent: "main"
