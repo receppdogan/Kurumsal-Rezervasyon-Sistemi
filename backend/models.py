@@ -195,6 +195,16 @@ class CompanyCreate(CompanyBase):
     booking_rules: Optional[BookingRules] = Field(default_factory=BookingRules)
 
 
+class CompanyUpdateBasic(CompanyBase):
+    """Company update without service fees - for company admins"""
+    booking_rules: Optional[BookingRules] = None
+
+
+class ServiceFeeUpdate(BaseModel):
+    """Service fee update - only for AGENCY_ADMIN"""
+    service_fees: ServiceFee
+
+
 class Company(CompanyBase):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     created_at: datetime = Field(default_factory=datetime.utcnow)
