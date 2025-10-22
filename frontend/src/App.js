@@ -13,6 +13,9 @@ import HotelsPage from "./pages/HotelsPage";
 import HotelDetailPage from "./pages/HotelDetailPage";
 import ReservationsPage from "./pages/ReservationsPage";
 import ApprovalsPage from "./pages/ApprovalsPage";
+import CompanyManagementPage from "./pages/CompanyManagementPage";
+import EmployeeManagementPage from "./pages/EmployeeManagementPage";
+import UserProfilePage from "./pages/UserProfilePage";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
