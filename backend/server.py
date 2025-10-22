@@ -21,6 +21,35 @@ def convert_to_try(amount: float, currency: str) -> float:
     """Convert amount to TRY"""
     return amount * EXCHANGE_RATES.get(currency, 1.0)
 
+
+def get_applicable_rule(company_rules: dict, user: dict) -> dict:
+    """Get the applicable booking rule for a user"""
+    rules_list = company_rules.get('rules', [])
+    
+    # Sort by priority (lowest number = highest priority)
+    sorted_rules = sorted(rules_list, key=lambda x: x.get('priority', 100))
+    
+    user_id = user.get('id')
+    user_department = user.get('department')
+    
+    for rule in sorted_rules:
+        applies_to = rule.get('applies_to', 'all')
+        
+        if applies_to == 'all':
+            return rule
+        elif applies_to == 'employees':
+            if user_id in rule.get('employee_list', []):
+                return rule
+        elif applies_to == 'departments':
+            if user_department and user_department in rule.get('department_list', []):
+                return rule
+    
+    # Fallback: return first rule or default
+    return sorted_rules[0] if sorted_rules else {
+        'requires_manager_approval': True,
+        'hotel_max_stars': 5
+    }
+
 # Import models and auth
 from models import (
     User, UserCreate, UserLogin, UserUpdate, UserResponse,
