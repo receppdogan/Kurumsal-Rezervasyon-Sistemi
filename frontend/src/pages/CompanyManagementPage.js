@@ -65,8 +65,17 @@ export default function CompanyManagementPage() {
 
   const fetchCompanies = async () => {
     try {
-      const response = await companyAPI.getAll();
+      const [companiesRes, usersRes] = await Promise.all([
+        companyAPI.getAll(),
+        userAPI.getAll()
+      ]);
+      const response = companiesRes;
       setCompanies(response.data);
+      
+      // Extract unique departments
+      const uniqueDepts = [...new Set(usersRes.data.map(u => u.department).filter(Boolean))];
+      setDepartments(uniqueDepts);
+      setEmployees(usersRes.data);
       if (response.data.length > 0) {
         const company = response.data[0];
         setSelectedCompany(company);
