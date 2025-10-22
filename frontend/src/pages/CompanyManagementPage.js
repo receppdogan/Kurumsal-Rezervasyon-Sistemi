@@ -57,12 +57,15 @@ export default function CompanyManagementPage() {
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-    if (user?.role !== 'admin') {
+    if (user?.role !== 'admin' && user?.role !== 'agency_admin') {
       window.location.href = '/dashboard';
       return;
     }
     fetchCompanies();
   }, [user]);
+
+  // Check if user is AGENCY_ADMIN (B2BTravel Admin)
+  const isAgencyAdmin = user?.role === 'agency_admin';
 
   const fetchCompanies = async () => {
     try {
