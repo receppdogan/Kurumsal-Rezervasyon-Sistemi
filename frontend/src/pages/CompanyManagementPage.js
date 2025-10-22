@@ -247,83 +247,357 @@ export default function CompanyManagementPage() {
                   <DollarSign className="h-5 w-5" />
                   Servis Ücretleri
                 </CardTitle>
-                <CardDescription>Her servis için uygulanacak ücretleri belirleyin (TL)</CardDescription>
+                <CardDescription>Her servis için uygulanacak ücretleri belirleyin</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="fee_hotel">Otel</Label>
-                    <Input
-                      id="fee_hotel"
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={serviceFees.hotel}
-                      onChange={(e) => setServiceFees({ ...serviceFees, hotel: parseFloat(e.target.value) })}
-                      data-testid="fee-hotel-input"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="fee_flight">Uçuş</Label>
-                    <Input
-                      id="fee_flight"
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={serviceFees.flight}
-                      onChange={(e) => setServiceFees({ ...serviceFees, flight: parseFloat(e.target.value) })}
-                      data-testid="fee-flight-input"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="fee_transfer">Transfer</Label>
-                    <Input
-                      id="fee_transfer"
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={serviceFees.transfer}
-                      onChange={(e) => setServiceFees({ ...serviceFees, transfer: parseFloat(e.target.value) })}
-                      data-testid="fee-transfer-input"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="fee_visa">Vize</Label>
-                    <Input
-                      id="fee_visa"
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={serviceFees.visa}
-                      onChange={(e) => setServiceFees({ ...serviceFees, visa: parseFloat(e.target.value) })}
-                      data-testid="fee-visa-input"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="fee_insurance">Sigorta</Label>
-                    <Input
-                      id="fee_insurance"
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={serviceFees.insurance}
-                      onChange={(e) => setServiceFees({ ...serviceFees, insurance: parseFloat(e.target.value) })}
-                      data-testid="fee-insurance-input"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="fee_car_rental">Araç Kiralama</Label>
-                    <Input
-                      id="fee_car_rental"
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={serviceFees.car_rental}
-                      onChange={(e) => setServiceFees({ ...serviceFees, car_rental: parseFloat(e.target.value) })}
-                      data-testid="fee-car-rental-input"
-                    />
+              <CardContent className="space-y-6">
+                {/* Hotel Fees */}
+                <div className="border rounded-lg p-4 space-y-4">
+                  <h3 className="font-semibold text-lg">Otel</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="hotel_type">Ücret Tipi</Label>
+                      <Select
+                        value={serviceFees.hotel.type}
+                        onValueChange={(value) => setServiceFees({ 
+                          ...serviceFees, 
+                          hotel: { ...serviceFees.hotel, type: value }
+                        })}
+                      >
+                        <SelectTrigger data-testid="hotel-type-select">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="fixed">Sabit Tutar (₺)</SelectItem>
+                          <SelectItem value="percentage">Yüzde (%)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="hotel_value">
+                        {serviceFees.hotel.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
+                      </Label>
+                      <Input
+                        id="hotel_value"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={serviceFees.hotel.value}
+                        onChange={(e) => setServiceFees({ 
+                          ...serviceFees, 
+                          hotel: { ...serviceFees.hotel, value: parseFloat(e.target.value) || 0 }
+                        })}
+                        data-testid="hotel-value-input"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="hotel_additional">Ek Özel Ücret (₺)</Label>
+                      <Input
+                        id="hotel_additional"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={serviceFees.hotel.additional_fee}
+                        onChange={(e) => setServiceFees({ 
+                          ...serviceFees, 
+                          hotel: { ...serviceFees.hotel, additional_fee: parseFloat(e.target.value) || 0 }
+                        })}
+                        data-testid="hotel-additional-input"
+                      />
+                    </div>
                   </div>
                 </div>
+
+                {/* Flight Fees */}
+                <div className="border rounded-lg p-4 space-y-4">
+                  <h3 className="font-semibold text-lg">Uçuş</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="flight_type">Ücret Tipi</Label>
+                      <Select
+                        value={serviceFees.flight.type}
+                        onValueChange={(value) => setServiceFees({ 
+                          ...serviceFees, 
+                          flight: { ...serviceFees.flight, type: value }
+                        })}
+                      >
+                        <SelectTrigger data-testid="flight-type-select">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="fixed">Sabit Tutar (₺)</SelectItem>
+                          <SelectItem value="percentage">Yüzde (%)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="flight_value">
+                        {serviceFees.flight.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
+                      </Label>
+                      <Input
+                        id="flight_value"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={serviceFees.flight.value}
+                        onChange={(e) => setServiceFees({ 
+                          ...serviceFees, 
+                          flight: { ...serviceFees.flight, value: parseFloat(e.target.value) || 0 }
+                        })}
+                        data-testid="flight-value-input"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="flight_additional">Ek Özel Ücret (₺)</Label>
+                      <Input
+                        id="flight_additional"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={serviceFees.flight.additional_fee}
+                        onChange={(e) => setServiceFees({ 
+                          ...serviceFees, 
+                          flight: { ...serviceFees.flight, additional_fee: parseFloat(e.target.value) || 0 }
+                        })}
+                        data-testid="flight-additional-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Transfer Fees */}
+                <div className="border rounded-lg p-4 space-y-4">
+                  <h3 className="font-semibold text-lg">Transfer</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="transfer_type">Ücret Tipi</Label>
+                      <Select
+                        value={serviceFees.transfer.type}
+                        onValueChange={(value) => setServiceFees({ 
+                          ...serviceFees, 
+                          transfer: { ...serviceFees.transfer, type: value }
+                        })}
+                      >
+                        <SelectTrigger data-testid="transfer-type-select">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="fixed">Sabit Tutar (₺)</SelectItem>
+                          <SelectItem value="percentage">Yüzde (%)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="transfer_value">
+                        {serviceFees.transfer.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
+                      </Label>
+                      <Input
+                        id="transfer_value"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={serviceFees.transfer.value}
+                        onChange={(e) => setServiceFees({ 
+                          ...serviceFees, 
+                          transfer: { ...serviceFees.transfer, value: parseFloat(e.target.value) || 0 }
+                        })}
+                        data-testid="transfer-value-input"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="transfer_additional">Ek Özel Ücret (₺)</Label>
+                      <Input
+                        id="transfer_additional"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={serviceFees.transfer.additional_fee}
+                        onChange={(e) => setServiceFees({ 
+                          ...serviceFees, 
+                          transfer: { ...serviceFees.transfer, additional_fee: parseFloat(e.target.value) || 0 }
+                        })}
+                        data-testid="transfer-additional-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Visa Fees */}
+                <div className="border rounded-lg p-4 space-y-4">
+                  <h3 className="font-semibold text-lg">Vize</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="visa_type">Ücret Tipi</Label>
+                      <Select
+                        value={serviceFees.visa.type}
+                        onValueChange={(value) => setServiceFees({ 
+                          ...serviceFees, 
+                          visa: { ...serviceFees.visa, type: value }
+                        })}
+                      >
+                        <SelectTrigger data-testid="visa-type-select">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="fixed">Sabit Tutar (₺)</SelectItem>
+                          <SelectItem value="percentage">Yüzde (%)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="visa_value">
+                        {serviceFees.visa.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
+                      </Label>
+                      <Input
+                        id="visa_value"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={serviceFees.visa.value}
+                        onChange={(e) => setServiceFees({ 
+                          ...serviceFees, 
+                          visa: { ...serviceFees.visa, value: parseFloat(e.target.value) || 0 }
+                        })}
+                        data-testid="visa-value-input"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="visa_additional">Ek Özel Ücret (₺)</Label>
+                      <Input
+                        id="visa_additional"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={serviceFees.visa.additional_fee}
+                        onChange={(e) => setServiceFees({ 
+                          ...serviceFees, 
+                          visa: { ...serviceFees.visa, additional_fee: parseFloat(e.target.value) || 0 }
+                        })}
+                        data-testid="visa-additional-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Insurance Fees */}
+                <div className="border rounded-lg p-4 space-y-4">
+                  <h3 className="font-semibold text-lg">Sigorta</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="insurance_type">Ücret Tipi</Label>
+                      <Select
+                        value={serviceFees.insurance.type}
+                        onValueChange={(value) => setServiceFees({ 
+                          ...serviceFees, 
+                          insurance: { ...serviceFees.insurance, type: value }
+                        })}
+                      >
+                        <SelectTrigger data-testid="insurance-type-select">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="fixed">Sabit Tutar (₺)</SelectItem>
+                          <SelectItem value="percentage">Yüzde (%)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="insurance_value">
+                        {serviceFees.insurance.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
+                      </Label>
+                      <Input
+                        id="insurance_value"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={serviceFees.insurance.value}
+                        onChange={(e) => setServiceFees({ 
+                          ...serviceFees, 
+                          insurance: { ...serviceFees.insurance, value: parseFloat(e.target.value) || 0 }
+                        })}
+                        data-testid="insurance-value-input"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="insurance_additional">Ek Özel Ücret (₺)</Label>
+                      <Input
+                        id="insurance_additional"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={serviceFees.insurance.additional_fee}
+                        onChange={(e) => setServiceFees({ 
+                          ...serviceFees, 
+                          insurance: { ...serviceFees.insurance, additional_fee: parseFloat(e.target.value) || 0 }
+                        })}
+                        data-testid="insurance-additional-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Car Rental Fees */}
+                <div className="border rounded-lg p-4 space-y-4">
+                  <h3 className="font-semibold text-lg">Araç Kiralama</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="car_rental_type">Ücret Tipi</Label>
+                      <Select
+                        value={serviceFees.car_rental.type}
+                        onValueChange={(value) => setServiceFees({ 
+                          ...serviceFees, 
+                          car_rental: { ...serviceFees.car_rental, type: value }
+                        })}
+                      >
+                        <SelectTrigger data-testid="car-rental-type-select">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="fixed">Sabit Tutar (₺)</SelectItem>
+                          <SelectItem value="percentage">Yüzde (%)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="car_rental_value">
+                        {serviceFees.car_rental.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
+                      </Label>
+                      <Input
+                        id="car_rental_value"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={serviceFees.car_rental.value}
+                        onChange={(e) => setServiceFees({ 
+                          ...serviceFees, 
+                          car_rental: { ...serviceFees.car_rental, value: parseFloat(e.target.value) || 0 }
+                        })}
+                        data-testid="car-rental-value-input"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="car_rental_additional">Ek Özel Ücret (₺)</Label>
+                      <Input
+                        id="car_rental_additional"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={serviceFees.car_rental.additional_fee}
+                        onChange={(e) => setServiceFees({ 
+                          ...serviceFees, 
+                          car_rental: { ...serviceFees.car_rental, additional_fee: parseFloat(e.target.value) || 0 }
+                        })}
+                        data-testid="car-rental-additional-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <Alert>
+                  <AlertDescription>
+                    <strong>Not:</strong> Yüzde seçeneğinde, hizmet tutarının belirtilen yüzdesi + ek özel ücret uygulanır. 
+                    Sabit tutar seçeneğinde ise belirtilen tutar + ek özel ücret uygulanır.
+                  </AlertDescription>
+                </Alert>
               </CardContent>
               <CardFooter>
                 <Button onClick={handleSubmit} disabled={loading} data-testid="save-fees-button">
