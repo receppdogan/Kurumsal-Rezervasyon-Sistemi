@@ -57,6 +57,25 @@ async def get_current_user_dep(credentials = Depends(security)):
     return await get_current_user(credentials, db)
 
 
+# Role-based dependencies
+async def require_admin(current_user: dict = Depends(get_current_user_dep)):
+    if current_user.get("role") not in [UserRole.ADMIN, UserRole.AGENCY_ADMIN]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required"
+        )
+    return current_user
+
+
+async def require_manager_or_admin(current_user: dict = Depends(get_current_user_dep)):
+    if current_user.get("role") not in [UserRole.ADMIN, UserRole.MANAGER]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Manager or Admin access required"
+        )
+    return current_user
+
+
 # ==================== AUTHENTICATION ENDPOINTS ====================
 
 @api_router.post("/auth/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
