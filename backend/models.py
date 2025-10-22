@@ -116,12 +116,42 @@ class ServiceFee(BaseModel):
     car_rental: ServiceFeeItem = Field(default_factory=ServiceFeeItem)
 
 
-class BookingRules(BaseModel):
+class RuleTarget(str, Enum):
+    ALL = "all"  # Tüm çalışanlar
+    DEPARTMENTS = "departments"  # Belirli departmanlar
+    EMPLOYEES = "employees"  # Belirli çalışanlar
+
+
+class BookingRule(BaseModel):
+    """Tek bir rezervasyon kuralı"""
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str = "Genel Kural"
+    applies_to: RuleTarget = RuleTarget.ALL
+    department_list: List[str] = []  # Departman isimleri
+    employee_list: List[str] = []  # Çalışan ID'leri
+    
+    # Otel kuralları
     hotel_max_stars: int = 5
     hotel_max_price_per_night: Optional[float] = None
+    
+    # Uçuş kuralları
+    flight_max_price: Optional[float] = None
+    flight_class_restriction: Optional[str] = None  # economy, business, first
+    
+    # Genel kurallar
     requires_manager_approval: bool = True
     economy_booking_days_before: int = 0
     business_booking_days_before: Optional[int] = None
+    
+    # Öncelik (düşük numara = yüksek öncelik)
+    priority: int = 100
+
+
+class BookingRules(BaseModel):
+    """Şirketin tüm rezervasyon kuralları"""
+    rules: List[BookingRule] = Field(default_factory=lambda: [
+        BookingRule(name="Varsayılan Kural", applies_to=RuleTarget.ALL)
+    ])
 
 
 class CompanyBase(BaseModel):
