@@ -35,12 +35,25 @@ export default function CompanyManagementPage() {
     car_rental: { type: 'fixed', value: 40, additional_fee: 0, currency: 'TRY' }
   });
   const [bookingRules, setBookingRules] = useState({
-    hotel_max_stars: 5,
-    hotel_max_price_per_night: 5000,
-    requires_manager_approval: true,
-    economy_booking_days_before: 0,
-    business_booking_days_before: 7
+    rules: [
+      {
+        id: Date.now().toString(),
+        name: 'Varsayılan Kural',
+        applies_to: 'all',
+        department_list: [],
+        employee_list: [],
+        hotel_max_stars: 5,
+        hotel_max_price_per_night: 5000,
+        requires_manager_approval: true,
+        economy_booking_days_before: 0,
+        business_booking_days_before: 7,
+        priority: 100
+      }
+    ]
   });
+  const [selectedRuleIndex, setSelectedRuleIndex] = useState(0);
+  const [departments, setDepartments] = useState([]);
+  const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
     if (user?.role !== 'admin') {
