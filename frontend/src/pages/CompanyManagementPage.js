@@ -428,8 +428,28 @@ export default function CompanyManagementPage() {
                       </Select>
                     </div>
                     <div className="space-y-2">
+                      <Label htmlFor="transfer_currency">Döviz</Label>
+                      <Select
+                        value={serviceFees.transfer.currency}
+                        onValueChange={(value) => setServiceFees({ 
+                          ...serviceFees, 
+                          transfer: { ...serviceFees.transfer, currency: value }
+                        })}
+                      >
+                        <SelectTrigger data-testid="transfer-currency-select">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="TRY">₺ TRY</SelectItem>
+                          <SelectItem value="USD">$ USD</SelectItem>
+                          <SelectItem value="EUR">€ EUR</SelectItem>
+                          <SelectItem value="GBP">£ GBP</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
                       <Label htmlFor="transfer_value">
-                        {serviceFees.transfer.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
+                        {serviceFees.transfer.type === 'percentage' ? 'Yüzde (%)' : `Tutar (${serviceFees.transfer.currency})`}
                       </Label>
                       <Input
                         id="transfer_value"
