@@ -101,3 +101,89 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: |
+  Corporate Reservation Engine için üç yeni özellik eklenmesi gerekiyor:
+  1. Çalışan onay mekanizması - Çalışan eklenirken onay gerektirip gerektirmediği ve onaylayıcı seçimi
+  2. Rezervasyon kuralları - Tüm servis tipleri için detaylı limit yönetimi
+  3. Hizmet bedelleri erişim kontrolü - Sadece B2BTravel admininin (AGENCY_ADMIN) hizmet bedellerini görebilmesi ve düzenleyebilmesi, şirket adminlerinin bu alana erişimi olmamalı
+
+backend:
+  - task: "Employee approval mechanism - API endpoints"
+    implemented: false
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Yeni görev - Çalışan oluştururken requires_approval ve approver_id alanlarını destekleyen endpoint gerekiyor"
+
+  - task: "Service fees access control - AGENCY_ADMIN only"
+    implemented: false
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Yeni görev - Hizmet bedellerini sadece AGENCY_ADMIN rolünün görüp düzenleyebilmesi için yeni endpoint ve yetkilendirme"
+
+frontend:
+  - task: "Employee approval UI in EmployeeManagementPage"
+    implemented: false
+    working: "NA"
+    file: "/app/frontend/src/pages/EmployeeManagementPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Yeni görev - Çalışan ekleme formuna onay checkbox'ı ve onaylayıcı seçimi dropdown'ı eklenmeli"
+
+  - task: "Service fees visibility control for company admin"
+    implemented: false
+    working: "NA"
+    file: "/app/frontend/src/pages/CompanyManagementPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Yeni görev - Şirket admini için hizmet bedelleri sekmesi gizlenmeli, sadece AGENCY_ADMIN görebilmeli"
+
+  - task: "BookingRules UI - All service types support"
+    implemented: false
+    working: "NA"
+    file: "/app/frontend/src/components/BookingRulesManager.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Yeni görev - Flight, Transfer, Visa, Insurance, Car Rental için limit ayarları UI'da eksiksiz olmalı"
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Employee approval mechanism - API endpoints"
+    - "Service fees access control - AGENCY_ADMIN only"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "İlk implementasyon başlatılıyor. Önce backend'de employee approval ve service fee access control yapılacak."
