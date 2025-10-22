@@ -63,4 +63,10 @@ export const userAPI = {
   getAll: () => api.get('/users'),
 };
 
+// Employees
+export const employeeAPI = {
+  create: (data) => api.post('/employees', data),
+  update: (id, data) => api.put(`/employees/${id}`, data),
+};
+
 export default api;
