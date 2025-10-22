@@ -364,6 +364,48 @@ export default function EmployeeManagementPage() {
                 />
               </div>
 
+              <div className="space-y-4 border-t pt-4">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="requires_approval"
+                    checked={formData.requires_approval}
+                    onCheckedChange={(checked) => setFormData({ 
+                      ...formData, 
+                      requires_approval: checked,
+                      approver_id: checked ? formData.approver_id : ''
+                    })}
+                    data-testid="requires-approval-checkbox"
+                  />
+                  <Label htmlFor="requires_approval" className="cursor-pointer">
+                    Rezervasyonlar onay gerektirsin
+                  </Label>
+                </div>
+
+                {formData.requires_approval && (
+                  <div className="space-y-2 ml-6">
+                    <Label htmlFor="approver">Onaylayıcı</Label>
+                    <Select
+                      value={formData.approver_id}
+                      onValueChange={(value) => setFormData({ ...formData, approver_id: value })}
+                    >
+                      <SelectTrigger data-testid="approver-select">
+                        <SelectValue placeholder="Onaylayıcı seçin..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {managers.map((manager) => (
+                          <SelectItem key={manager.id} value={manager.id}>
+                            {manager.full_name} ({manager.role === 'admin' ? 'Admin' : 'Manager'})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {formData.requires_approval && !formData.approver_id && (
+                      <p className="text-sm text-red-500">Onaylayıcı seçimi zorunludur</p>
+                    )}
+                  </div>
+                )}
+              </div>
+
               <Alert>
                 <AlertDescription>
                   <strong>Not:</strong> Çalışan ilk giriş yaptığında GDPR/KVKK onayı vermesi ve şifresini değiştirmesi gerekecektir.
