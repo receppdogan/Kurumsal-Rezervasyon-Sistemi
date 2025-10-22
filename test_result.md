@@ -142,27 +142,33 @@ backend:
 frontend:
   - task: "Employee approval UI in EmployeeManagementPage"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/EmployeeManagementPage.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "İmplementasyon tamamlandı - Çalışan ekleme formuna 'Rezervasyonlar onay gerektirsin' checkbox'ı ve onaylayıcı seçimi dropdown'ı eklendi. employeeAPI.create() kullanılıyor. Onaylayıcı listesi manager ve adminleri içeriyor."
+      - working: true
+        agent: "testing"
+        comment: "Employee approval UI testing completed successfully. ✅ Add Employee dialog opens correctly ✅ Approval checkbox functionality works - approver dropdown initially hidden ✅ When approval checkbox is checked, approver dropdown appears ✅ Approver dropdown contains manager and admin options (2 options found) ✅ Approver selection works correctly ✅ Form submission works and dialog closes after submission ✅ Employee creation process completes successfully"
 
   - task: "Service fees visibility control for company admin"
     implemented: true
-    working: "NA"
+    working: false
     file: "/app/frontend/src/pages/CompanyManagementPage.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "İmplementasyon tamamlandı - isAgencyAdmin kontrolü eklendi. Hizmet bedelleri sekmesi ve içeriği sadece AGENCY_ADMIN rolüne gösteriliyor. TabsList grid düzeni dinamik olarak ayarlanıyor."
+      - working: false
+        agent: "testing"
+        comment: "Service fees visibility control testing completed with issues. ✅ Company Admin (admin@abc-tech.com): Service Fees tab correctly HIDDEN (2 tabs visible) ❌ Agency Admin (agency.admin@b2btravel.com): Service Fees tab incorrectly HIDDEN (0 tabs visible) - Agency admin redirected to GDPR consent page, after accepting consent, company management page shows 0 tabs instead of expected 3 tabs. The isAgencyAdmin check may not be working correctly for agency admin role."
 
   - task: "BookingRules UI - All service types support"
     implemented: false
