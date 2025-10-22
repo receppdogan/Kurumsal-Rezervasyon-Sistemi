@@ -28,12 +28,12 @@ async def create_test_company():
         "phone": "+90 212 123 45 67",
         "email": "info@abc-tech.com",
         "service_fees": {
-            "hotel": 50.0,
-            "flight": 75.0,
-            "transfer": 25.0,
-            "visa": 100.0,
-            "insurance": 30.0,
-            "car_rental": 40.0
+            "hotel": {"type": "fixed", "value": 50.0, "additional_fee": 0.0},
+            "flight": {"type": "percentage", "value": 5.0, "additional_fee": 25.0},
+            "transfer": {"type": "fixed", "value": 25.0, "additional_fee": 0.0},
+            "visa": {"type": "fixed", "value": 100.0, "additional_fee": 0.0},
+            "insurance": {"type": "percentage", "value": 10.0, "additional_fee": 0.0},
+            "car_rental": {"type": "fixed", "value": 40.0, "additional_fee": 15.0}
         },
         "booking_rules": {
             "hotel_max_stars": 5,
