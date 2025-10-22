@@ -1,0 +1,86 @@
+<analysis>
+The previous AI engineer successfully built a corporate reservation engine MVP. Starting from a document and an existing codebase, the engineer established a FastAPI backend with MongoDB, a React frontend with Tailwind CSS, and implemented core features iteratively. Key milestones included user authentication (login, register, GDPR), hotel search and booking, and a manager approval workflow. Debugging involved fixing FastAPI dependency injection issues and missing React component imports. Subsequent iterations added robust service fee management with multi-currency support, and began implementing department and employee-specific booking rules and employee approval mechanisms. The process highlighted iterative development, problem-solving, and continuous integration of user feedback.
+</analysis>
+
+<product_requirements>
+The goal is to build a Corporate Reservation Engine, starting as an MVP with mock data, prioritizing hotel bookings, and eventually expanding to flight, transfer, visa, and insurance services. The application needs user authentication, hotel search/booking, and an approval workflow for reservations.
+**Implemented Features:**
+*   **Core Booking System:** User registration, login, GDPR consent, hotel search, and reservation creation.
+*   **Role-Based Access:** Admin, Manager, Employee roles with specific permissions.
+*   **Manager Approval:** Reservations require manager approval.
+*   **Company Management:** Ability to manage company details.
+*   **Employee Management:** Managing employee information within a company.
+*   **User Profiles:** Individual user profile pages.
+*   **Flexible Service Fees:** Configurable service fees (fixed/percentage) with additional fees for various services (hotel, flight, transfer, visa, insurance, car rental).
+*   **Multi-Currency Support:** Service fees can be defined in different currencies with automatic conversion to TRY for totals.
+*   **Booking Rules:** Ability to define reservation rules based on department and specific employees, with service-specific limits.
+</product_requirements>
+
+<key_technical_concepts>
+-   **Full-stack:** React (Frontend), FastAPI (Backend), MongoDB (Database).
+-   **Authentication:** JWT (JSON Web Tokens), ,  for password hashing.
+-   **Dependency Injection:** FastAPI  for authentication and database sessions.
+-   **State Management:** React Context API for authentication ().
+-   **Styling:** Tailwind CSS.
+-   **Routing:** React Router DOM.
+-   **Environment Variables:**  (frontend), ,  (backend).
+-   **Deployment:** Supervisor for process management.
+-   **Data Modeling:** Pydantic models for API request/response validation and MongoDB schema.
+-   **Currency Conversion:** Backend logic for converting different currencies to a base currency (TRY).
+</key_technical_concepts>
+
+<code_architecture>
+The application follows a standard full-stack architecture with distinct backend and frontend services.
+
+**Directory Structure:**
+
+
+-   :
+    -   **Summary**: Defines Pydantic models for , , , , , , , , . These models enforce data structure and validation for both database storage and API communication.
+    -   **Changes**: Initially created. Updated repeatedly to include , , , , and / for users.
+-   :
+    -   **Summary**: Contains functions for password hashing (, ), JWT token creation (), and FastAPI dependency functions (, , , ) for authentication and authorization.
+    -   **Changes**: Initially created. Refactored  into specific role-based dependencies to simplify  and fix an earlier dependency injection issue.
+-   :
+    -   **Summary**: The main FastAPI application. Initializes MongoDB connection, sets up CORS, and defines all API routes (, , , , , , ). It orchestrates logic using  and .
+    -   **Changes**: Rewritten from scratch. Significant modifications to incorporate  calculation, currency conversion,  checks during reservation, and fixing  dependency injection. Routes for company, employee, and user profile management were added.
+-   :
+    -   **Summary**: A script to populate the MongoDB with initial mock data for companies, users (admin, manager, employee roles), and their associated configurations (like service fees).
+    -   **Changes**: Updated to reflect new  and  model fields (e.g., , , , ).
+-   :
+    -   **Summary**: Provides authentication state (user, token, roles) to the entire React application. Includes functions for login, logout, and token handling.
+    -   **Changes**: Initially created. No major structural changes noted, but implicitly updated to handle new user fields like .
+-   :
+    -   **Summary**: Centralized module for making API calls to the backend. It uses  or  (implicitly  based on context) and handles authentication headers.
+    -   **Changes**: Initially created. Expanded to include new endpoints for company management, employee management, user profiles, and booking rules.
+-   :
+    -   **Summary**: The root React component. Sets up application-wide routing using React Router, integrates the  and  component.
+    -   **Changes**: Significant updates to add new routes for , , , , and integrating  flow.
+-   :
+    -   **Summary**: Defines the overall structure of the application, including header, navigation, and footer. It adapts navigation items based on user roles and authentication status.
+    -   **Changes**: Updated to include navigation links for the newly added pages (Company/Employee Management, User Profile, Approvals).
+-   :
+    -   **Summary**: A page for administrators/managers to configure company-specific settings, including service fees and booking rules.
+    -   **Changes**: Heavily modified to support the complex  structure with currency selectors for all service types (Hotel, Flight, Transfer, Visa, Insurance, Car Rental). Integrated the  component. Updated to fetch and display department and employee lists.
+-   :
+    -   **Summary**: Displays details of a selected hotel and allows users to make a reservation.
+    -   **Changes**: Updated to fetch company service fees, calculate the total reservation cost including service fees (with currency conversion), and display these details prominently before booking.
+-   :
+    -   **Summary**: A newly created component to manage the complex booking rules, allowing configuration of rules based on service type, department, and specific employees, with service-specific limits.
+    -   **Changes**: Initially created. Updated to handle service-based limits (, , ) and to filter employees based on selected departments.
+
+</code_architecture>
+
+<pending_tasks>
+-   **Employee Approval Mechanism (Frontend):** Implement the UI for specifying if a new employee needs approval and who the approver is during employee creation, based on the backend model updates.
+-   **Frontend UI for Booking Rules:** Complete the detailed frontend implementation for service-specific booking limits (Flight, Transfer, Visa, Insurance, Car Rental) in 
+</pending_tasks>
+
+<current_work>
+The AI engineer was most recently working on implementing an employee approval mechanism. The user requested that when adding new employees, it should be possible to specify if they need approval and to select the approving authority.
+The last action taken was updating the backend  file to incorporate the necessary fields for this feature (e.g., ,  in the  model, or related fields in  or ). This indicates that the backend data model for this feature is in progress, specifically the definition of how approval requirements and approver details will be stored.
+</current_work>
+
+<optional_next_step>
+Continue with the backend implementation for the employee approval mechanism, specifically the API endpoints in  for creating and updating employees with approval settings.
+</optional_next_step>
