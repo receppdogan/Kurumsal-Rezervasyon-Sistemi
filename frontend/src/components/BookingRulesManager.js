@@ -193,29 +193,67 @@ export default function BookingRulesManager({
 
             {/* Department Selection */}
             {currentRule.applies_to === 'departments' && (
-              <div className="space-y-3">
-                <Label>Departmanlar Seçin</Label>
-                <div className="border rounded-lg p-4 space-y-2 max-h-48 overflow-y-auto">
-                  {departments.length > 0 ? (
-                    departments.map((dept) => (
-                      <div key={dept} className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          id={`dept-${dept}`}
-                          checked={currentRule.department_list?.includes(dept)}
-                          onChange={() => toggleDepartment(dept)}
-                          className="h-4 w-4"
-                          data-testid={`dept-checkbox-${dept}`}
-                        />
-                        <label htmlFor={`dept-${dept}`} className="text-sm">
-                          {dept}
-                        </label>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-sm text-gray-500">Henüz departman bulunmuyor</p>
-                  )}
+              <div className="space-y-4">
+                <div className="space-y-3">
+                  <Label>Departmanlar Seçin</Label>
+                  <div className="border rounded-lg p-4 space-y-2 max-h-48 overflow-y-auto">
+                    {departments.length > 0 ? (
+                      departments.map((dept) => (
+                        <div key={dept} className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            id={`dept-${dept}`}
+                            checked={currentRule.department_list?.includes(dept)}
+                            onChange={() => toggleDepartment(dept)}
+                            className="h-4 w-4"
+                            data-testid={`dept-checkbox-${dept}`}
+                          />
+                          <label htmlFor={`dept-${dept}`} className="text-sm font-medium">
+                            {dept}
+                          </label>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-sm text-gray-500">Henüz departman bulunmuyor</p>
+                    )}
+                  </div>
                 </div>
+
+                {/* Show employees from selected departments */}
+                {currentRule.department_list && currentRule.department_list.length > 0 && (
+                  <div className="space-y-3">
+                    <Label>
+                      Seçilen Departmanlardaki Çalışanlar 
+                      <span className="text-xs text-gray-500 ml-2">
+                        (Opsiyonel - Boş bırakırsanız tüm departman çalışanlarına uygulanır)
+                      </span>
+                    </Label>
+                    <div className="border rounded-lg p-4 space-y-2 max-h-64 overflow-y-auto bg-blue-50">
+                      {employees
+                        .filter(emp => currentRule.department_list.includes(emp.department))
+                        .map((emp) => (
+                          <div key={emp.id} className="flex items-center space-x-2 bg-white p-2 rounded">
+                            <input
+                              type="checkbox"
+                              id={`dept-emp-${emp.id}`}
+                              checked={currentRule.employee_list?.includes(emp.id)}
+                              onChange={() => toggleEmployee(emp.id)}
+                              className="h-4 w-4"
+                              data-testid={`dept-emp-checkbox-${emp.id}`}
+                            />
+                            <label htmlFor={`dept-emp-${emp.id}`} className="text-sm flex-1">
+                              <span className="font-medium">{emp.full_name}</span>
+                              <span className="text-gray-500 text-xs ml-2">({emp.email})</span>
+                              <span className="text-blue-600 text-xs ml-2">• {emp.department}</span>
+                            </label>
+                          </div>
+                        ))}
+                      {employees.filter(emp => currentRule.department_list.includes(emp.department)).length === 0 && (
+                        <p className="text-sm text-gray-500">Seçilen departmanlarda çalışan bulunmuyor</p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
