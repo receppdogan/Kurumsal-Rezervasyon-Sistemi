@@ -164,7 +164,7 @@ export default function CompanyManagementPage() {
             <h1 className="text-3xl font-bold">Şirket Yönetimi</h1>
             <p className="text-gray-600 mt-2">Şirket bilgilerini ve ayarlarını yönetin</p>
           </div>
-          {selectedCompany && (
+          {selectedCompany && isAgencyAdmin && (
             <Button onClick={handleReset} variant="outline" data-testid="new-company-button">
               <Building className="h-4 w-4 mr-2" />
               Yeni Şirket Ekle
