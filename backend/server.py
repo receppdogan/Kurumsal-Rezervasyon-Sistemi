@@ -299,16 +299,21 @@ async def get_company(
 @api_router.put("/companies/{company_id}", response_model=Company)
 async def update_company(
     company_id: str,
-    company_data: CompanyCreate,
+    company_data: CompanyUpdateBasic,
     current_user: dict = Depends(require_admin),
     database = Depends(get_db)
 ):
-    """Update company (Admin only)"""
+    """Update company basic info (Admin only) - excludes service fees"""
     existing = await database.companies.find_one({"id": company_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Company not found")
     
-    update_data = company_data.model_dump()
+    # Only update fields provided (exclude service_fees)
+    update_data = {}
+    for field, value in company_data.model_dump(exclude_unset=True).items():
+        if value is not None:
+            update_data[field] = value
+    
     update_data['updated_at'] = datetime.utcnow().isoformat()
     
     await database.companies.update_one(
@@ -323,6 +328,45 @@ async def update_company(
         updated['updated_at'] = datetime.fromisoformat(updated['updated_at'])
     
     return Company(**updated)
+
+
+@api_router.get("/companies/{company_id}/service-fees")
+async def get_service_fees(
+    company_id: str,
+    current_user: dict = Depends(require_agency_admin),
+    database = Depends(get_db)
+):
+    """Get service fees for a company (AGENCY_ADMIN only)"""
+    company = await database.companies.find_one({"id": company_id}, {"_id": 0})
+    if not company:
+        raise HTTPException(status_code=404, detail="Company not found")
+    
+    return {"service_fees": company.get('service_fees', {})}
+
+
+@api_router.put("/companies/{company_id}/service-fees")
+async def update_service_fees(
+    company_id: str,
+    fee_data: ServiceFeeUpdate,
+    current_user: dict = Depends(require_agency_admin),
+    database = Depends(get_db)
+):
+    """Update service fees for a company (AGENCY_ADMIN only)"""
+    existing = await database.companies.find_one({"id": company_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Company not found")
+    
+    update_data = {
+        'service_fees': fee_data.model_dump()['service_fees'],
+        'updated_at': datetime.utcnow().isoformat()
+    }
+    
+    await database.companies.update_one(
+        {"id": company_id},
+        {"$set": update_data}
+    )
+    
+    return {"message": "Service fees updated successfully", "service_fees": update_data['service_fees']}
 
 
 # ==================== HOTEL ENDPOINTS ====================
