@@ -111,27 +111,33 @@ user_problem_statement: |
 backend:
   - task: "Employee approval mechanism - API endpoints"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "İmplementasyon tamamlandı - POST /api/employees ve PUT /api/employees/{id} endpointleri eklendi. requires_approval ve approver_id alanlarını destekliyor. Onaylayıcı validasyonu yapılıyor (manager veya admin olmalı)."
+      - working: true
+        agent: "testing"
+        comment: "Backend testing completed successfully. All employee creation and update endpoints working correctly. Validation tests passed: ✅ Valid employee creation with approval settings ✅ Employee creation without approval ✅ Invalid approver validation (returns 400 'Approver not found') ✅ Employee role validation (returns 400 'Approver must be a manager or admin') ✅ Duplicate email validation (returns 400 'Email already registered') ✅ Employee update with approval settings ✅ Employee update approver change ✅ Update validation for invalid approver"
 
   - task: "Service fees access control - AGENCY_ADMIN only"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "İmplementasyon tamamlandı - GET/PUT /api/companies/{id}/service-fees endpointleri eklendi. Sadece AGENCY_ADMIN erişebiliyor. Company update endpoint'i service_fees içermiyor artık."
+      - working: true
+        agent: "testing"
+        comment: "Backend testing completed successfully. Service fees access control working correctly: ✅ AGENCY_ADMIN can GET service fees (returns 200 with service fees data) ✅ AGENCY_ADMIN can PUT service fees (returns 200 with success message) ✅ Company ADMIN denied GET service fees (returns 403 'B2BTravel Admin access required') ✅ Company ADMIN denied PUT service fees (returns 403 'B2BTravel Admin access required') ✅ Company basic info update works without affecting service fees ✅ Service fees preserved after company update ✅ Authentication required for all endpoints (returns 403 'Not authenticated' without token)"
 
 frontend:
   - task: "Employee approval UI in EmployeeManagementPage"
