@@ -119,7 +119,7 @@ async def login(credentials: UserLogin, database = Depends(get_db)):
 
 
 @api_router.get("/auth/me", response_model=UserResponse)
-async def get_me(current_user: dict = Depends(lambda: get_current_user(db=db))):
+async def get_me(current_user: dict = Depends(get_current_user_dep)):
     """Get current user information"""
     return UserResponse(**current_user)
 
@@ -127,7 +127,7 @@ async def get_me(current_user: dict = Depends(lambda: get_current_user(db=db))):
 @api_router.put("/auth/me", response_model=UserResponse)
 async def update_me(
     updates: UserUpdate,
-    current_user: dict = Depends(lambda: get_current_user(db=db)),
+    current_user: dict = Depends(get_current_user_dep),
     database = Depends(get_db)
 ):
     """Update current user information"""
@@ -155,7 +155,7 @@ async def update_me(
 
 @api_router.post("/auth/accept-gdpr")
 async def accept_gdpr(
-    current_user: dict = Depends(lambda: get_current_user(db=db)),
+    current_user: dict = Depends(get_current_user_dep),
     database = Depends(get_db)
 ):
     """Accept GDPR/KVKK policy"""
@@ -192,7 +192,7 @@ async def create_company(
 
 @api_router.get("/companies", response_model=List[Company])
 async def get_companies(
-    current_user: dict = Depends(lambda: get_current_user(db=db)),
+    current_user: dict = Depends(get_current_user_dep),
     database = Depends(get_db)
 ):
     """Get all companies"""
@@ -210,7 +210,7 @@ async def get_companies(
 @api_router.get("/companies/{company_id}", response_model=Company)
 async def get_company(
     company_id: str,
-    current_user: dict = Depends(lambda: get_current_user(db=db)),
+    current_user: dict = Depends(get_current_user_dep),
     database = Depends(get_db)
 ):
     """Get company by ID"""
@@ -260,7 +260,7 @@ async def update_company(
 @api_router.post("/hotels/search", response_model=List[Hotel])
 async def search_hotels(
     search: HotelSearchRequest,
-    current_user: dict = Depends(lambda: get_current_user(db=db)),
+    current_user: dict = Depends(get_current_user_dep),
     database = Depends(get_db)
 ):
     """Search hotels based on criteria"""
@@ -302,7 +302,7 @@ async def search_hotels(
 @api_router.get("/hotels/{hotel_id}", response_model=Hotel)
 async def get_hotel(
     hotel_id: str,
-    current_user: dict = Depends(lambda: get_current_user(db=db)),
+    current_user: dict = Depends(get_current_user_dep),
     database = Depends(get_db)
 ):
     """Get hotel details by ID"""
@@ -321,7 +321,7 @@ async def get_hotel(
 @api_router.post("/reservations", response_model=Reservation, status_code=status.HTTP_201_CREATED)
 async def create_reservation(
     reservation_data: HotelReservationCreate,
-    current_user: dict = Depends(lambda: get_current_user(db=db)),
+    current_user: dict = Depends(get_current_user_dep),
     database = Depends(get_db)
 ):
     """Create a new hotel reservation"""
@@ -380,7 +380,7 @@ async def create_reservation(
 @api_router.get("/reservations", response_model=List[ReservationResponse])
 async def get_reservations(
     status: Optional[ReservationStatus] = None,
-    current_user: dict = Depends(lambda: get_current_user(db=db)),
+    current_user: dict = Depends(get_current_user_dep),
     database = Depends(get_db)
 ):
     """Get reservations based on user role"""
@@ -430,7 +430,7 @@ async def get_reservations(
 @api_router.get("/reservations/{reservation_id}", response_model=ReservationResponse)
 async def get_reservation(
     reservation_id: str,
-    current_user: dict = Depends(lambda: get_current_user(db=db)),
+    current_user: dict = Depends(get_current_user_dep),
     database = Depends(get_db)
 ):
     """Get reservation by ID"""
@@ -474,7 +474,7 @@ async def get_reservation(
 async def update_reservation(
     reservation_id: str,
     updates: ReservationUpdate,
-    current_user: dict = Depends(lambda: get_current_user(db=db)),
+    current_user: dict = Depends(get_current_user_dep),
     database = Depends(get_db)
 ):
     """Update reservation status (approve, reject, cancel)"""
@@ -512,7 +512,7 @@ async def update_reservation(
 
 @api_router.get("/dashboard/stats", response_model=DashboardStats)
 async def get_dashboard_stats(
-    current_user: dict = Depends(lambda: get_current_user(db=db)),
+    current_user: dict = Depends(get_current_user_dep),
     database = Depends(get_db)
 ):
     """Get dashboard statistics based on user role"""
