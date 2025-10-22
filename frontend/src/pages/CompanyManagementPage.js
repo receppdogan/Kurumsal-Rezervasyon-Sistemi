@@ -505,6 +505,26 @@ export default function CompanyManagementPage() {
                       </Select>
                     </div>
                     <div className="space-y-2">
+                      <Label htmlFor="visa_currency">Döviz</Label>
+                      <Select
+                        value={serviceFees.visa.currency}
+                        onValueChange={(value) => setServiceFees({ 
+                          ...serviceFees, 
+                          visa: { ...serviceFees.visa, currency: value }
+                        })}
+                      >
+                        <SelectTrigger data-testid="visa-currency-select">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="TRY">₺ TRY</SelectItem>
+                          <SelectItem value="USD">$ USD</SelectItem>
+                          <SelectItem value="EUR">€ EUR</SelectItem>
+                          <SelectItem value="GBP">£ GBP</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
                       <Label htmlFor="visa_value">
                         {serviceFees.visa.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
                       </Label>
@@ -522,7 +542,7 @@ export default function CompanyManagementPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="visa_additional">Ek Özel Ücret (₺)</Label>
+                      <Label htmlFor="visa_additional">Ek Özel Ücret ({serviceFees.visa.currency})</Label>
                       <Input
                         id="visa_additional"
                         type="number"
@@ -562,6 +582,26 @@ export default function CompanyManagementPage() {
                       </Select>
                     </div>
                     <div className="space-y-2">
+                      <Label htmlFor="insurance_currency">Döviz</Label>
+                      <Select
+                        value={serviceFees.insurance.currency}
+                        onValueChange={(value) => setServiceFees({ 
+                          ...serviceFees, 
+                          insurance: { ...serviceFees.insurance, currency: value }
+                        })}
+                      >
+                        <SelectTrigger data-testid="insurance-currency-select">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="TRY">₺ TRY</SelectItem>
+                          <SelectItem value="USD">$ USD</SelectItem>
+                          <SelectItem value="EUR">€ EUR</SelectItem>
+                          <SelectItem value="GBP">£ GBP</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
                       <Label htmlFor="insurance_value">
                         {serviceFees.insurance.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
                       </Label>
@@ -579,7 +619,7 @@ export default function CompanyManagementPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="insurance_additional">Ek Özel Ücret (₺)</Label>
+                      <Label htmlFor="insurance_additional">Ek Özel Ücret ({serviceFees.insurance.currency})</Label>
                       <Input
                         id="insurance_additional"
                         type="number"
@@ -619,6 +659,26 @@ export default function CompanyManagementPage() {
                       </Select>
                     </div>
                     <div className="space-y-2">
+                      <Label htmlFor="car_rental_currency">Döviz</Label>
+                      <Select
+                        value={serviceFees.car_rental.currency}
+                        onValueChange={(value) => setServiceFees({ 
+                          ...serviceFees, 
+                          car_rental: { ...serviceFees.car_rental, currency: value }
+                        })}
+                      >
+                        <SelectTrigger data-testid="car-rental-currency-select">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="TRY">₺ TRY</SelectItem>
+                          <SelectItem value="USD">$ USD</SelectItem>
+                          <SelectItem value="EUR">€ EUR</SelectItem>
+                          <SelectItem value="GBP">£ GBP</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
                       <Label htmlFor="car_rental_value">
                         {serviceFees.car_rental.type === 'percentage' ? 'Yüzde (%)' : 'Tutar (₺)'}
                       </Label>
@@ -636,7 +696,7 @@ export default function CompanyManagementPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="car_rental_additional">Ek Özel Ücret (₺)</Label>
+                      <Label htmlFor="car_rental_additional">Ek Özel Ücret ({serviceFees.car_rental.currency})</Label>
                       <Input
                         id="car_rental_additional"
                         type="number"
