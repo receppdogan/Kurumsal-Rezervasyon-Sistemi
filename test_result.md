@@ -135,28 +135,28 @@ backend:
 
 frontend:
   - task: "Employee approval UI in EmployeeManagementPage"
-    implemented: false
+    implemented: true
     working: "NA"
     file: "/app/frontend/src/pages/EmployeeManagementPage.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Yeni görev - Çalışan ekleme formuna onay checkbox'ı ve onaylayıcı seçimi dropdown'ı eklenmeli"
+        comment: "İmplementasyon tamamlandı - Çalışan ekleme formuna 'Rezervasyonlar onay gerektirsin' checkbox'ı ve onaylayıcı seçimi dropdown'ı eklendi. employeeAPI.create() kullanılıyor. Onaylayıcı listesi manager ve adminleri içeriyor."
 
   - task: "Service fees visibility control for company admin"
-    implemented: false
+    implemented: true
     working: "NA"
     file: "/app/frontend/src/pages/CompanyManagementPage.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Yeni görev - Şirket admini için hizmet bedelleri sekmesi gizlenmeli, sadece AGENCY_ADMIN görebilmeli"
+        comment: "İmplementasyon tamamlandı - isAgencyAdmin kontrolü eklendi. Hizmet bedelleri sekmesi ve içeriği sadece AGENCY_ADMIN rolüne gösteriliyor. TabsList grid düzeni dinamik olarak ayarlanıyor."
 
   - task: "BookingRules UI - All service types support"
     implemented: false
@@ -168,7 +168,7 @@ frontend:
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Yeni görev - Flight, Transfer, Visa, Insurance, Car Rental için limit ayarları UI'da eksiksiz olmalı"
+        comment: "Henüz yapılmadı - Flight, Transfer, Visa, Insurance, Car Rental için limit ayarları UI'da eksiksiz olmalı. Önce employee approval ve service fees test edilecek."
 
 metadata:
   created_by: "main_agent"
