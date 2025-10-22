@@ -195,19 +195,8 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: |
-      Backend ve frontend implementasyonları tamamlandı:
-      
-      Backend değişiklikleri:
-      1. /app/backend/models.py - EmployeeCreate, CompanyUpdateBasic, ServiceFeeUpdate modelleri eklendi
-      2. /app/backend/server.py - require_agency_admin dependency, POST /api/employees, PUT /api/employees/{id}, GET/PUT /api/companies/{id}/service-fees endpointleri eklendi
-      
-      Frontend değişiklikleri:
-      1. /app/frontend/src/api/api.js - employeeAPI ve companyAPI.getServiceFees/updateServiceFees eklendi
-      2. /app/frontend/src/pages/EmployeeManagementPage.js - Onay checkbox'ı ve onaylayıcı dropdown'ı eklendi
-      3. /app/frontend/src/pages/CompanyManagementPage.js - Service fees sekmesi sadece AGENCY_ADMIN'e gösteriliyor
-      
-      Tüm dosyalar lint kontrolünden geçti. Servisler yeniden başlatıldı.
-      Backend testing hazır.
+      Backend testing tamamlandı - tüm testler başarılı ✅
+      Şimdi frontend otomatik testi başlatılıyor.
   - agent: "testing"
     message: |
       Backend testing completed successfully! All implemented features are working correctly:
