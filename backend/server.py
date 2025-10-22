@@ -256,10 +256,10 @@ async def accept_gdpr(
 @api_router.post("/companies", response_model=Company, status_code=status.HTTP_201_CREATED)
 async def create_company(
     company_data: CompanyCreate,
-    current_user: dict = Depends(require_admin),
+    current_user: dict = Depends(require_agency_admin),
     database = Depends(get_db)
 ):
-    """Create a new company (Admin only)"""
+    """Create a new company (AGENCY_ADMIN only)"""
     company = Company(**company_data.model_dump())
     
     company_dict = company.model_dump()
