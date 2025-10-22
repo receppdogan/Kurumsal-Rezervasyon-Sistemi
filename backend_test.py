@@ -264,11 +264,13 @@ class APITester:
         
         response = self.make_request("POST", "/employees", employee_data4, self.tokens["ADMIN"])
         
-        if response and response.status_code == 400:
+        if response and response.status_code == 400 and "Approver must be a manager or admin" in response.text:
             print_success("Validation correctly rejected employee as approver")
             self.test_results.append(("Approver role validation", True))
         else:
             print_error("Validation should have rejected employee as approver")
+            if response:
+                print(f"    Response: {response.text}")
             self.test_results.append(("Approver role validation", False))
         
         # Test 5: Test duplicate email validation
