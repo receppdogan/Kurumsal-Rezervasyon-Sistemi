@@ -178,9 +178,9 @@ export default function CompanyManagementPage() {
         )}
 
         <Tabs defaultValue="info" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className={`grid w-full ${isAgencyAdmin ? 'grid-cols-3' : 'grid-cols-2'}`}>
             <TabsTrigger value="info">Şirket Bilgileri</TabsTrigger>
-            <TabsTrigger value="fees">Servis Ücretleri</TabsTrigger>
+            {isAgencyAdmin && <TabsTrigger value="fees">Servis Ücretleri</TabsTrigger>}
             <TabsTrigger value="rules">Rezervasyon Kuralları</TabsTrigger>
           </TabsList>
 
