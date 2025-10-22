@@ -106,7 +106,14 @@ export default function CompanyManagementPage() {
 
   const handleReset = () => {
     setFormData({ name: '', tax_number: '', address: '', phone: '', email: '' });
-    setServiceFees({ hotel: 50, flight: 75, transfer: 25, visa: 100, insurance: 30, car_rental: 40 });
+    setServiceFees({
+      hotel: { type: 'fixed', value: 50, additional_fee: 0 },
+      flight: { type: 'fixed', value: 75, additional_fee: 0 },
+      transfer: { type: 'fixed', value: 25, additional_fee: 0 },
+      visa: { type: 'fixed', value: 100, additional_fee: 0 },
+      insurance: { type: 'fixed', value: 30, additional_fee: 0 },
+      car_rental: { type: 'fixed', value: 40, additional_fee: 0 }
+    });
     setBookingRules({ hotel_max_stars: 5, hotel_max_price_per_night: 5000, requires_manager_approval: true, economy_booking_days_before: 0, business_booking_days_before: 7 });
     setSelectedCompany(null);
   };
