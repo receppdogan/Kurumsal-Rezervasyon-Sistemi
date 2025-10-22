@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
-import { hotelAPI, reservationAPI } from '../api/api';
+import { hotelAPI, reservationAPI, API_BASE } from '../api/api';
 import { useAuth } from '../context/AuthContext';
+import axios from 'axios';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
 import { Alert, AlertDescription } from '../components/ui/alert';
