@@ -227,8 +227,9 @@ class APITester:
         # Test 3: Test validation - invalid approver_id
         print_info("Test 3: Test validation with invalid approver_id")
         
+        unique_id3 = str(uuid.uuid4())[:8]
         employee_data3 = {
-            "email": "test.employee3@abc-tech.com",
+            "email": f"test.employee3.{unique_id3}@abc-tech.com",
             "password": "test123",
             "full_name": "Test Employee 3",
             "phone": "+90 532 666 66 66",
