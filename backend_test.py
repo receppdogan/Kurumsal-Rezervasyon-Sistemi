@@ -238,11 +238,13 @@ class APITester:
         
         response = self.make_request("POST", "/employees", employee_data3, self.tokens["ADMIN"])
         
-        if response and response.status_code == 400:
+        if response and response.status_code == 400 and "Approver not found" in response.text:
             print_success("Validation correctly rejected invalid approver_id")
             self.test_results.append(("Invalid approver validation", True))
         else:
             print_error("Validation should have rejected invalid approver_id")
+            if response:
+                print(f"    Response: {response.text}")
             self.test_results.append(("Invalid approver validation", False))
         
         # Test 4: Test validation - approver must be manager or admin
