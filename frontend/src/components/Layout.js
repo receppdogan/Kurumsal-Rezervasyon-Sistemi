@@ -32,6 +32,8 @@ export default function Layout({ children }) {
     { icon: Calendar, label: 'Rezervasyonlarım', path: '/reservations', roles: ['admin', 'manager', 'employee'] },
     { icon: CheckCircle, label: 'Onay Bekleyenler', path: '/approvals', roles: ['admin', 'manager'] },
     { icon: Building, label: 'Şirket Yönetimi', path: '/company', roles: ['admin'] },
+    { icon: User, label: 'Çalışan Yönetimi', path: '/employees', roles: ['admin', 'manager'] },
+    { icon: User, label: 'Profilim', path: '/profile', roles: ['admin', 'manager', 'employee'] },
   ];
 
   const filteredNavItems = navItems.filter(item => 
