@@ -752,97 +752,17 @@ export default function CompanyManagementPage() {
           </TabsContent>
 
           <TabsContent value="rules">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Settings className="h-5 w-5" />
-                  Rezervasyon Kuralları ve Limitleri
-                </CardTitle>
-                <CardDescription>Çalışanların rezervasyon yapma kurallarını belirleyin</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <h3 className="font-semibold">Otel Rezervasyon Limitleri</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="max_stars">Maksimum Yıldız</Label>
-                      <Input
-                        id="max_stars"
-                        type="number"
-                        min="1"
-                        max="5"
-                        value={bookingRules.hotel_max_stars}
-                        onChange={(e) => setBookingRules({ ...bookingRules, hotel_max_stars: parseInt(e.target.value) })}
-                        data-testid="max-stars-input"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="max_price">Maksimum Gecelik Fiyat (TL)</Label>
-                      <Input
-                        id="max_price"
-                        type="number"
-                        min="0"
-                        value={bookingRules.hotel_max_price_per_night || ''}
-                        onChange={(e) => setBookingRules({ ...bookingRules, hotel_max_price_per_night: parseFloat(e.target.value) || null })}
-                        placeholder="Limitsiz için boş bırakın"
-                        data-testid="max-price-input"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <h3 className="font-semibold">Onay Kuralları</h3>
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      id="requires_approval"
-                      checked={bookingRules.requires_manager_approval}
-                      onChange={(e) => setBookingRules({ ...bookingRules, requires_manager_approval: e.target.checked })}
-                      className="h-4 w-4"
-                      data-testid="requires-approval-checkbox"
-                    />
-                    <Label htmlFor="requires_approval" className="font-normal">
-                      Rezervasyonlar manager onayı gerektirsin
-                    </Label>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <h3 className="font-semibold">Uçuş Rezervasyon Kuralları</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="economy_days">Economy - Minimum Gün Öncesi</Label>
-                      <Input
-                        id="economy_days"
-                        type="number"
-                        min="0"
-                        value={bookingRules.economy_booking_days_before}
-                        onChange={(e) => setBookingRules({ ...bookingRules, economy_booking_days_before: parseInt(e.target.value) })}
-                        data-testid="economy-days-input"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="business_days">Business - Minimum Gün Öncesi</Label>
-                      <Input
-                        id="business_days"
-                        type="number"
-                        min="0"
-                        value={bookingRules.business_booking_days_before || ''}
-                        onChange={(e) => setBookingRules({ ...bookingRules, business_booking_days_before: parseInt(e.target.value) || null })}
-                        placeholder="Limitsiz için boş bırakın"
-                        data-testid="business-days-input"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button onClick={handleSubmit} disabled={loading} data-testid="save-rules-button">
-                  {loading ? 'Kaydediliyor...' : 'Kuralları Kaydet'}
-                </Button>
-              </CardFooter>
-            </Card>
+            <BookingRulesManager
+              bookingRules={bookingRules}
+              setBookingRules={setBookingRules}
+              departments={departments}
+              employees={employees}
+            />
+            <div className="mt-6">
+              <Button onClick={handleSubmit} disabled={loading} className="w-full" data-testid="save-rules-button">
+                {loading ? 'Kaydediliyor...' : 'Tüm Kuralları Kaydet'}
+              </Button>
+            </div>
           </TabsContent>
         </Tabs>
 
