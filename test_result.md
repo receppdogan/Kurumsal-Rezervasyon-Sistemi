@@ -110,28 +110,28 @@ user_problem_statement: |
 
 backend:
   - task: "Employee approval mechanism - API endpoints"
-    implemented: false
+    implemented: true
     working: "NA"
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Yeni görev - Çalışan oluştururken requires_approval ve approver_id alanlarını destekleyen endpoint gerekiyor"
+        comment: "İmplementasyon tamamlandı - POST /api/employees ve PUT /api/employees/{id} endpointleri eklendi. requires_approval ve approver_id alanlarını destekliyor. Onaylayıcı validasyonu yapılıyor (manager veya admin olmalı)."
 
   - task: "Service fees access control - AGENCY_ADMIN only"
-    implemented: false
+    implemented: true
     working: "NA"
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Yeni görev - Hizmet bedellerini sadece AGENCY_ADMIN rolünün görüp düzenleyebilmesi için yeni endpoint ve yetkilendirme"
+        comment: "İmplementasyon tamamlandı - GET/PUT /api/companies/{id}/service-fees endpointleri eklendi. Sadece AGENCY_ADMIN erişebiliyor. Company update endpoint'i service_fees içermiyor artık."
 
 frontend:
   - task: "Employee approval UI in EmployeeManagementPage"
