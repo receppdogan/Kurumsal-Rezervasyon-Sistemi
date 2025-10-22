@@ -331,7 +331,7 @@ export default function CompanyManagementPage() {
                 {/* Flight Fees */}
                 <div className="border rounded-lg p-4 space-y-4">
                   <h3 className="font-semibold text-lg">Uçuş</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="flight_type">Ücret Tipi</Label>
                       <Select
