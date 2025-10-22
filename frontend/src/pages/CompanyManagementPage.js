@@ -388,7 +388,7 @@ export default function CompanyManagementPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="flight_additional">Ek Özel Ücret (₺)</Label>
+                      <Label htmlFor="flight_additional">Ek Özel Ücret ({serviceFees.flight.currency})</Label>
                       <Input
                         id="flight_additional"
                         type="number"
