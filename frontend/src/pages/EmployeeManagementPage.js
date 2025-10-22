@@ -31,8 +31,11 @@ export default function EmployeeManagementPage() {
     phone: '',
     role: 'employee',
     company_id: '',
-    department: ''
+    department: '',
+    requires_approval: false,
+    approver_id: ''
   });
+  const [managers, setManagers] = useState([]);
 
   useEffect(() => {
     if (user?.role !== 'admin' && user?.role !== 'manager') {
