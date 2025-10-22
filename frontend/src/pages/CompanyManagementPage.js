@@ -103,6 +103,17 @@ export default function CompanyManagementPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Prevent company creation if not agency admin
+    if (!selectedCompany && !isAgencyAdmin) {
+      toast({
+        title: "Hata",
+        description: 'Yeni şirket oluşturma yetkisine sahip değilsiniz',
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setLoading(true);
 
     try {
