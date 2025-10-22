@@ -756,6 +756,15 @@ export default function CompanyManagementPage() {
 
           {isAgencyAdmin && (
             <TabsContent value="fees">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <DollarSign className="h-5 w-5" />
+                    Servis Ücretleri
+                  </CardTitle>
+                  <CardDescription>Her servis için uygulanacak ücretleri belirleyin</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
             <BookingRulesManager
               bookingRules={bookingRules}
               setBookingRules={setBookingRules}
