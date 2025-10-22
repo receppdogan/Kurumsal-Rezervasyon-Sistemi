@@ -387,11 +387,16 @@ async def create_reservation(
             fee_type = hotel_fee_config.get('type', 'fixed')
             fee_value = hotel_fee_config.get('value', 0.0)
             additional_fee = hotel_fee_config.get('additional_fee', 0.0)
+            currency = hotel_fee_config.get('currency', 'TRY')
             
             if fee_type == 'percentage':
-                service_fee = (total_price * fee_value / 100) + additional_fee
+                # Percentage is always calculated on the base price
+                service_fee = (total_price * fee_value / 100)
+                # Convert additional fee to TRY if in different currency
+                service_fee += convert_to_try(additional_fee, currency)
             else:  # fixed
-                service_fee = fee_value + additional_fee
+                # Convert both value and additional fee to TRY
+                service_fee = convert_to_try(fee_value, currency) + convert_to_try(additional_fee, currency)
         else:
             # Backward compatibility for old float format
             service_fee = float(hotel_fee_config) if hotel_fee_config else 0.0
