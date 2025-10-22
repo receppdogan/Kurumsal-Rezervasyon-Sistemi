@@ -754,32 +754,6 @@ export default function CompanyManagementPage() {
               </CardFooter>
             </Card>
           </TabsContent>
-
-          {isAgencyAdmin && (
-            <TabsContent value="fees">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <DollarSign className="h-5 w-5" />
-                    Servis Ücretleri
-                  </CardTitle>
-                  <CardDescription>Her servis için uygulanacak ücretleri belirleyin</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <BookingRulesManager
-                    bookingRules={bookingRules}
-                    setBookingRules={setBookingRules}
-                    departments={departments}
-                    employees={employees}
-                  />
-                  <div className="mt-6">
-                    <Button onClick={handleSubmit} disabled={loading} className="w-full" data-testid="save-rules-button">
-                      {loading ? 'Kaydediliyor...' : 'Tüm Kuralları Kaydet'}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
           )}
 
           <TabsContent value="rules">
